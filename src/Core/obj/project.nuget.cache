@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "lKp5uHBrISa+MPtKi02iqvwtqDKlPu2Sd4N6otf6j14lubyIK/L3L2le0PZptFMweCPzMIMpZxyUrIU9WvSWgA==",
+  "success": true,
+  "projectFilePath": "D:\\todo\\src\\Core\\Core.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\darkt\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

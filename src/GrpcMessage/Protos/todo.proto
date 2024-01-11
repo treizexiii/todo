@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "message.proto";
+
+option csharp_namespace = "GrpcMessage";
+
+package GrpcMessage.Todo;
+
+service TodoService {
+  rpc GetTodos (GetTodosRequest) returns (GrpcMessage.Common.Response);
+  rpc CreateTodo (CreateTodoMessage) returns (GrpcMessage.Common.Response);
+  rpc UpdateTodo (UpdateTodoMessage) returns (GrpcMessage.Common.Response);
+  rpc CompleteTodo (CompleteTodoMessage) returns (GrpcMessage.Common.Response);
+}
+
+message GetTodosRequest {
+  bool isCompleted = 1;
+}
+
+message CreateTodoMessage {
+  string title = 1;
+  string description = 2;
+  google.protobuf.Timestamp dueDate = 3;
+}
+
+message UpdateTodoMessage {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  google.protobuf.Timestamp dueDate = 4;
+}
+
+message CompleteTodoMessage {
+  string id = 1;
+}
+
+message TodoMessage {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  bool completed = 4;
+  google.protobuf.Timestamp dueDate = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  google.protobuf.Timestamp updatedAt = 7;
+  google.protobuf.Timestamp completedAt = 8;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package GrpcMessage.Common;
+
+import "google/protobuf/any.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "GrpcMessage";
+
+message Response {
+  bool success = 1;
+  int32 code = 2;
+  string message = 3;
+  google.protobuf.Timestamp executeTime = 4;
+  google.protobuf.Any data = 5;
+  repeated google.protobuf.Any datas = 6;
+}
