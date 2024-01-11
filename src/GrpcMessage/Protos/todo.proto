@@ -4,19 +4,21 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "message.proto";
+import "item.proto";
 
-option csharp_namespace = "GrpcMessage";
+option csharp_namespace = "GrpcMessage.Todo";
 
 package GrpcMessage.Todo;
 
 service TodoService {
-  rpc GetTodos (GetTodosRequest) returns (GrpcMessage.Common.Response);
+  rpc GetTodos (TodosFilterMessage) returns (GrpcMessage.Common.Response);
+  rpc GetTodo (GrpcMessage.Common.IdMessage) returns (GrpcMessage.Common.Response);
   rpc CreateTodo (CreateTodoMessage) returns (GrpcMessage.Common.Response);
   rpc UpdateTodo (UpdateTodoMessage) returns (GrpcMessage.Common.Response);
   rpc CompleteTodo (CompleteTodoMessage) returns (GrpcMessage.Common.Response);
 }
 
-message GetTodosRequest {
+message TodosFilterMessage {
   bool isCompleted = 1;
 }
 
@@ -37,7 +39,7 @@ message CompleteTodoMessage {
   string id = 1;
 }
 
-message TodoMessage {
+message TodoListMessage {
   string id = 1;
   string title = 2;
   string description = 3;
@@ -48,3 +50,14 @@ message TodoMessage {
   google.protobuf.Timestamp completedAt = 8;
 }
 
+message TodoMessage {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  bool completed = 4;
+  google.protobuf.Timestamp dueDate = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  google.protobuf.Timestamp updatedAt = 7;
+  google.protobuf.Timestamp completedAt = 8;
+  repeated GrpcMessage.Item.ItemMessage items = 9;
+}

@@ -1,47 +1,55 @@
 syntax = "proto3";
 
-option csharp_namespace = "GrpcMessages";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "message.proto";
+
+option csharp_namespace = "GrpcMessage.Item";
+
+package GrpcMessage.Item;
 
 service ItemService {
-    rpc GetItem (GetItemRequest) returns (Item);
-    rpc GetItems (GetItemsRequest) returns (stream Item);
-    rpc AddItem (AddItemRequest) returns (Item);
-    rpc UpdateItem (UpdateItemRequest) returns (Item);
-    rpc DeleteItem (DeleteItemRequest) returns (DeleteItemResponse);
+//    rpc GetItem (GetItemMessage) returns (GrpcMessage.Common.Response);
+    rpc GetItems (GetItemsMessage) returns (GrpcMessage.Common.Response);
+    rpc AddItem (AddItemMessage) returns (GrpcMessage.Common.Response);
+    rpc UpdateItem (UpdateItemMessage) returns (GrpcMessage.Common.Response);
+    rpc CompleteItem (CompleteItemMessage) returns (GrpcMessage.Common.Response);
 }
 
-message GetItemRequest {
+message GetItemMessage {
     int32 id = 1;
 }
 
-message GetItemsRequest {
-    int32 page = 1;
-    int32 pageSize = 2;
+message GetItemsMessage {
+    string todoId = 1;
 }
 
-message AddItemRequest {
-    string name = 1;
-    string description = 2;
-    double price = 3;
-}
-
-message UpdateItemRequest {
-    int32 id = 1;
-    string name = 2;
+message AddItemMessage {
+    string todoId = 1;
+    string title = 2;
     string description = 3;
+    google.protobuf.Timestamp dueDate = 4;
 }
 
-message DeleteItemRequest {
+message UpdateItemMessage {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    google.protobuf.Timestamp dueDate = 4;
+}
+
+message CompleteItemMessage {
     string id = 1;
 }
 
-message DeleteItemResponse {
-    bool success = 1;
-}
-
-message Item {
+message ItemMessage {
     string id = 1;
-    string name = 2;
+    string title = 2;
     string description = 3;
-    double price = 4;
+    bool completed = 4;
+    google.protobuf.Timestamp dueDate = 5;
+    google.protobuf.Timestamp createdAt = 6;
+    google.protobuf.Timestamp updatedAt = 7;
+    google.protobuf.Timestamp completedAt = 8;
+
 }

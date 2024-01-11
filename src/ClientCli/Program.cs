@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using GrpcClient;
-using GrpcMessage;
+using GrpcMessage.Todo;
 
 Console.WriteLine("Hello, World!");
 

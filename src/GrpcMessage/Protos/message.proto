@@ -15,3 +15,7 @@ message Response {
   google.protobuf.Any data = 5;
   repeated google.protobuf.Any datas = 6;
 }
+
+message IdMessage {
+  string id = 1;
+}

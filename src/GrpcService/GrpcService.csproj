@@ -9,33 +9,34 @@
 
     <ItemGroup>
         <PackageReference Include="Grpc.AspNetCore" Version="2.57.0"/>
-        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.60.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.1" />
+        <PackageReference Include="Grpc.AspNetCore.Web" Version="2.60.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.8.1"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Protos\" />
+        <Folder Include="Protos\"/>
     </ItemGroup>
-    
+
     <ItemGroup>
-      <Protobuf Include="..\GrpcMessage\Protos\todo.proto" GrpcServices="Server" />
-      <Protobuf Include="..\GrpcMessage\Protos\message.proto" GrpcServices="Server" />
+        <Protobuf Include="..\GrpcMessage\Protos\message.proto" GrpcServices="Server"/>
+        <Protobuf Include="..\GrpcMessage\Protos\todo.proto" GrpcServices="Server"/>
+        <Protobuf Include="..\GrpcMessage\Protos\item.proto" GrpcServices="Server"/>
     </ItemGroup>
-    
+
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core.csproj" />
-      <ProjectReference Include="..\Database\Database.csproj" />
-      <ProjectReference Include="..\GrpcMessage\GrpcMessage.csproj" />
+        <ProjectReference Include="..\Core\Core.csproj"/>
+        <ProjectReference Include="..\Database\Database.csproj"/>
+        <ProjectReference Include="..\GrpcMessage\GrpcMessage.csproj"/>
     </ItemGroup>
-    
+
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core.csproj" />
+        <ProjectReference Include="..\Core\Core.csproj"/>
     </ItemGroup>
 
 </Project>
