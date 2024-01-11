@@ -1,3 +1,0 @@
-obj\Debug\net8.0/Message.cs: C:/Users/darkt/.nuget/packages/grpc.tools/2.60.0/build/native/include/google/protobuf/any.proto\
- C:/Users/darkt/.nuget/packages/grpc.tools/2.60.0/build/native/include/google/protobuf/timestamp.proto\
- ../GrpcMessage/Protos/message.proto

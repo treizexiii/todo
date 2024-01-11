@@ -1,6 +1,0 @@
-obj\Debug\net8.0/Todo.cs \
-obj\Debug\net8.0/TodoGrpc.cs: C:/Users/darkt/.nuget/packages/grpc.tools/2.60.0/build/native/include/google/protobuf/timestamp.proto\
- C:/Users/darkt/.nuget/packages/grpc.tools/2.60.0/build/native/include/google/protobuf/wrappers.proto\
- C:/Users/darkt/.nuget/packages/grpc.tools/2.60.0/build/native/include/google/protobuf/any.proto\
- ../GrpcMessage/Protos/message.proto\
- ../GrpcMessage/Protos/todo.proto
