@@ -11,5 +11,3 @@ public interface IItemService
     Task<Item> UpdateAsync(Guid id, UpdateItem item);
     Task<Item> CompleteAsync(Guid id);
 }
-
-

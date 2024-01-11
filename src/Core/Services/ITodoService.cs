@@ -12,4 +12,3 @@ public interface ITodoService
     Task<Todo> UpdateAsync(Guid id, UpdateTodo todo);
     Task<Todo> CompleteAsync(Guid id);
 }
-

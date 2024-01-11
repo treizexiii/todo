@@ -18,10 +18,7 @@ public class ItemService(IItemsRepository repository) : IItemService
 
     public async Task<Item> CreateAsync(Guid todoId, CreateItem item)
     {
-        if (!await repository.ControlListAsync(todoId))
-        {
-            throw new Exception("Todo not found");
-        }
+        if (!await repository.ControlListAsync(todoId)) throw new Exception("Todo not found");
 
         var utc = DateTime.UtcNow;
         var itemEntity = new Item
@@ -44,10 +41,7 @@ public class ItemService(IItemsRepository repository) : IItemService
     public async Task<Item> UpdateAsync(Guid id, UpdateItem item)
     {
         var itemEntity = await repository.GetAsync(id);
-        if (itemEntity is null)
-        {
-            throw new FileNotFoundException($"Item with id {id} not found");
-        }
+        if (itemEntity is null) throw new FileNotFoundException($"Item with id {id} not found");
 
         itemEntity.Title = item.Title;
         itemEntity.Description = item.Description ?? string.Empty;
@@ -63,10 +57,7 @@ public class ItemService(IItemsRepository repository) : IItemService
     public async Task<Item> CompleteAsync(Guid id)
     {
         var itemEntity = await repository.GetAsync(id);
-        if (itemEntity is null)
-        {
-            throw new FileNotFoundException($"Item with id {id} not found");
-        }
+        if (itemEntity is null) throw new FileNotFoundException($"Item with id {id} not found");
 
         itemEntity.IsCompleted = true;
         itemEntity.CompletedAt = DateTime.UtcNow;

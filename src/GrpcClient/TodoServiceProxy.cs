@@ -2,7 +2,7 @@ using Grpc.Net.Client;
 using GrpcMessage;
 using TodoService = GrpcMessage.TodoService;
 
-namespace ClientCli;
+namespace GrpcClient;
 
 public class TodoServiceProxy : IDisposable
 {
@@ -29,6 +29,23 @@ public class TodoServiceProxy : IDisposable
     {
         var client = new TodoService.TodoServiceClient(_channel);
         var response = await client.CreateTodoAsync(todo);
+        return response.Data.Unpack<TodoMessage>();
+    }
+
+    public async Task<TodoMessage> UpdateAsync(UpdateTodoMessage todo)
+    {
+        var client = new TodoService.TodoServiceClient(_channel);
+        var response = await client.UpdateTodoAsync(todo);
+        return response.Data.Unpack<TodoMessage>();
+    }
+
+    public async Task<TodoMessage> CompleteAsync(Guid id)
+    {
+        var client = new TodoService.TodoServiceClient(_channel);
+        var response = await client.CompleteTodoAsync(new CompleteTodoMessage
+        {
+            Id = id.ToString()
+        });
         return response.Data.Unpack<TodoMessage>();
     }
 

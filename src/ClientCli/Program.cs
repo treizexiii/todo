@@ -1,6 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using ClientCli;
+using GrpcClient;
 using GrpcMessage;
 
 Console.WriteLine("Hello, World!");

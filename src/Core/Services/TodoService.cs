@@ -37,10 +37,7 @@ public class TodoService(ITodosRepository repository) : ITodoService
     public async Task<Todo> UpdateAsync(Guid id, UpdateTodo todo)
     {
         var todoEntity = await repository.GetAsync(id);
-        if (todoEntity is null)
-        {
-            throw new FileNotFoundException($"Todo with id {id} not found");
-        }
+        if (todoEntity is null) throw new FileNotFoundException($"Todo with id {id} not found");
 
         todoEntity.Title = todo.Title;
         todoEntity.Description = todo.Description ?? string.Empty;
@@ -54,10 +51,7 @@ public class TodoService(ITodosRepository repository) : ITodoService
     public async Task<Todo> CompleteAsync(Guid id)
     {
         var todoEntity = await repository.GetAsync(id);
-        if (todoEntity is null)
-        {
-            throw new FileNotFoundException($"Todo with id {id} not found");
-        }
+        if (todoEntity is null) throw new FileNotFoundException($"Todo with id {id} not found");
 
         var utc = DateTime.UtcNow;
         todoEntity.IsCompleted = true;
