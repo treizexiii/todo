@@ -1,13 +1,14 @@
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Tools.TransactionManager;
 
 namespace Database.Context;
 
-public class TodoDb : DbContext
+public class TodoDb : DbContext, IDbContext
 {
     public TodoDb(DbContextOptions<TodoDb> options) : base(options)
     {
-
     }
 
     public DbSet<Todo> Todos { get; set; } = null!;
@@ -22,4 +23,16 @@ public class TodoDb : DbContext
     {
         base.OnModelCreating(modelBuilder);
     }
+
+    public async Task<IDbContextTransaction> BeginTransactionAsync()
+    {
+        return await base.Database.BeginTransactionAsync();
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await base.SaveChangesAsync();
+    }
+
+    public IDbContextTransaction? CurrentTransaction => base.Database.CurrentTransaction;
 }

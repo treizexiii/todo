@@ -32,7 +32,7 @@ public static class GrpcMessageExtensions
         var title = request.Title;
         var description = request.Description;
         DateTime? dueDate = request.DueDate != null ? request.DueDate.ToDateTime() : null;
-        return new UpdateTodo(title, description, dueDate);
+        return new UpdateTodo(Guid.Parse(request.Id), title, description, dueDate);
     }
 
     public static TodoListMessage CreateTodoListMessage(this Todo todo)
@@ -83,7 +83,7 @@ public static class GrpcMessageExtensions
         var title = request.Title;
         var description = request.Description;
         DateTime? dueDate = request.DueDate != null ? request.DueDate.ToDateTime() : null;
-        return new CreateItem(title, description, dueDate);
+        return new CreateItem(title, description, dueDate, Guid.Parse(request.TodoId));
     }
 
     public static UpdateItem ToUpdateItemMessage(this UpdateItemMessage request)
@@ -91,6 +91,6 @@ public static class GrpcMessageExtensions
         var title = request.Title;
         var description = request.Description;
         DateTime? dueDate = request.DueDate != null ? request.DueDate.ToDateTime() : null;
-        return new UpdateItem(title, description, dueDate);
+        return new UpdateItem(Guid.Parse(request.Id), title, description, dueDate, Guid.Empty);
     }
 }

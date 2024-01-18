@@ -14,10 +14,26 @@ public static class ContextProvider
         {
             options.UseInMemoryDatabase(connectionString);
         });
-
-        services.AddScoped<ITodosRepository, TodosRepository>();
-        services.AddScoped<IItemsRepository, ItemsRepository>();
+        AddRepositories(services);
 
         return services;
+    }
+
+    public static IServiceCollection AddPostgresContext(this IServiceCollection services, string connectionString)
+    {
+        services.AddDbContext<TodoDb>(options =>
+        {
+            options.UseNpgsql(connectionString);
+            options.UseLowerCaseNamingConvention();
+        });
+        AddRepositories(services);
+
+        return services;
+    }
+
+    private static void AddRepositories(IServiceCollection services)
+    {
+        services.AddScoped<ITodosRepository, TodosRepository>();
+        services.AddScoped<IItemsRepository, ItemsRepository>();
     }
 }

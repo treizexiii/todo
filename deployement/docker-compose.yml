@@ -1,26 +1,72 @@
 version: "3"
+
 services:
-  web-app:
+  todo-api:
+    container_name: todo-api
     build:
       context: ../.
-      dockerfile: src/WebApp/Dockerfile
-    container_name: web-app
+      dockerfile: src/Api/Dockerfile
     ports:
       - "5000:80"
-    depends_on:
-      - grpc-server
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - GRPC_SERVER_URL=http://grpc-server:5001
     extra_hosts:
-      - "grpc-server:192.168.1.150"
-  grpc-server:
+      - "todo-db:192.168.1.150"
+    depends_on:
+      - postgres
+
+  identity-server:
+    container_name: identity-server
     build:
       context: ../.
-      dockerfile: src/GrpcService/Dockerfile
-    container_name: grpc-server
+      dockerfile: src/Authentication/Authentication.IdentityServer/Dockerfile
     ports:
-      - "127.0.0.1:8080:8080"
+      - "8080:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+    extra_hosts:
+      - "identity-db:192.168.1.150"
+    depends_on:
+      - postgres
+
+  postgres:
+    container_name: postgres
+    image: postgres:13.13
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - D:\todo\data\postgres:/var/lib/postgresql/data
+
+
+
+#services:
+#  web-app:
+#    build:
+#      context: ../.
+#      dockerfile: src/WebApp/Dockerfile
+#    container_name: web-app
+#    ports:
+#      - "5000:80"
+#    depends_on:
+#      - grpc-server
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Development
+#      - ASPNETCORE_URLS=http://+:80
+#      - GRPC_SERVER_URL=http://grpc-server:5001
+#    extra_hosts:
+#      - "grpc-server:192.168.1.150"
+#  grpc-server:
+#    build:
+#      context: ../.
+#      dockerfile: src/GrpcService/Dockerfile
+#    container_name: grpc-server
+#    ports:
+#      - "127.0.0.1:8080:8080"
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=Development

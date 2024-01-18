@@ -1,4 +1,5 @@
 using Grpc.Net.Client;
+using Grpc.Net.Client.Web;
 using GrpcMessage.Item;
 
 namespace GrpcClient;
@@ -9,7 +10,9 @@ public class ItemServiceProxy : IDisposable
 
     public ItemServiceProxy(string url)
     {
-        _channel = GrpcChannel.ForAddress(url);
+        _channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions {
+            HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+        });
     }
 
     public async Task<ItemMessage> CreateAsync(AddItemMessage item)

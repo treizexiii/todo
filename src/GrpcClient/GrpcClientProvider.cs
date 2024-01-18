@@ -1,4 +1,3 @@
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GrpcClient;
@@ -12,4 +11,9 @@ public static class GrpcClientProvider
 
         return services;
     }
+
+    // public static WebAssemblyHost UseGrpcClient(this WebAssemblyHost app)
+    // {
+    //     app.UseGrpcWeb();
+    // }
 }

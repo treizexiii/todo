@@ -1,4 +1,5 @@
 using Grpc.Net.Client;
+using Grpc.Net.Client.Web;
 using GrpcMessage.Todo;
 using TodoService = GrpcMessage.Todo.TodoService;
 
@@ -10,7 +11,9 @@ public class TodoServiceProxy : IDisposable
 
     public TodoServiceProxy(string url)
     {
-        _channel = GrpcChannel.ForAddress(url);
+        _channel = GrpcChannel.ForAddress(url, new GrpcChannelOptions {
+            HttpHandler = new GrpcWebHandler(new HttpClientHandler())
+        });
     }
 
     public async Task<IEnumerable<TodoListMessage>> GetAllAsync()
