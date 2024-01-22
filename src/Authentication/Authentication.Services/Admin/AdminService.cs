@@ -35,9 +35,15 @@ public class AdminService(IUserRepository userRepository, IClaimsRepository clai
         {
             Id = registerDto.Id == Guid.Empty ? Guid.NewGuid() : registerDto.Id,
             Username = registerDto.Username,
-            Email = registerDto.Email,
             IsActivated = false,
             IsDeleted = false,
+            Person = new Person
+            {
+                Id = Guid.NewGuid(),
+                Firstname = registerDto.Firstname,
+                Lastname = registerDto.Lastname,
+                Email = registerDto.Email,
+            }
         };
 
         var role = roles.FirstOrDefault(x => x.Name == RoleEnum.User);

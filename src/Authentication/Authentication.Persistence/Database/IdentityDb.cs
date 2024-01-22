@@ -1,5 +1,6 @@
 using Authentication.Domain.Entities;
 using Authentication.Domain.Entities.Enums;
+using Authentication.Persistence.PersistentEntities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -13,7 +14,7 @@ public class IdentityDb : DbContext, IDbContext
     {
     }
 
-    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<DbUser> Users { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Claim> Claims { get; set; } = null!;
     public DbSet<UserClaim> UserClaims { get; set; } = null!;
