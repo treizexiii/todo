@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GrpcClient\GrpcClient.csproj" />
+      <ProjectReference Include="..\Client\Client.HttpRestClient\Client.HttpRestClient.csproj" />
     </ItemGroup>
 
 </Project>

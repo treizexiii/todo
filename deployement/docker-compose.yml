@@ -1,6 +1,21 @@
 version: "3"
 
 services:
+  todo-web-app:
+    container_name: todo-web-app
+    build:
+      context: ../.
+      dockerfile: src/WebApp/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://+:80
+    extra_hosts:
+      - "todo-api:${IP_ADDRESS}"
+    depends_on:
+      - todo-api
+  
   todo-api:
     container_name: todo-api
     build:
@@ -12,7 +27,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     extra_hosts:
-      - "todo-db:192.168.1.150"
+      - "todo-db:${IP_ADDRESS}"
     depends_on:
       - postgres
 
@@ -22,12 +37,12 @@ services:
       context: ../.
       dockerfile: src/Authentication/Authentication.IdentityServer/Dockerfile
     ports:
-      - "8080:80"
+      - "7000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
     extra_hosts:
-      - "identity-db:192.168.1.150"
+      - "identity-db:${IP_ADDRESS}"
     depends_on:
       - postgres
 
@@ -41,7 +56,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - D:\todo\data\postgres:/var/lib/postgresql/data
+      - D:\todo-grpc\data\postgres:/var/lib/postgresql/data
 
 
 

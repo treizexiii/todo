@@ -15,5 +15,5 @@ dotnet ef migrations add 'Init' --project .\src\Database\Database.csproj  --star
 ```
 
 ```bash
-dotnet ef database update --project .\src\Database\Database.csproj --startup-project .\src\Authentication\Authentication.IdentityServer\Authentication.IdentityServer.csproj --context TodoDb
+dotnet ef database update --project .\src\Database\Database.csproj --startup-project .\src\Api\Api.csproj --context TodoDb
 ```

@@ -1,6 +1,6 @@
-﻿@page "/weather"
-@using GrpcMessage.Todo
+﻿@page "/todos"
 @using TodoService = WebApp.Services.TodoService
+@using Core.Dto
 @inject HttpClient Http
 @inject TodoService TodoService
 
@@ -42,7 +42,7 @@ else
 }
 
 @code {
-    private TodoListMessage[]? _todos;
+    private TodoHeaderDto[]? _todos;
 
     protected override async Task OnInitializedAsync()
     {

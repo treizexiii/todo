@@ -20,6 +20,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployement", "deployement", "{784E2CF8-7592-47EA-9B42-1424EB6631B8}"
 	ProjectSection(SolutionItems) = preProject
 		deployement\docker-compose.yml = deployement\docker-compose.yml
+		deployement\.env = deployement\.env
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{6C65086A-2E97-47B9-8581-1B876A3F2749}"
@@ -57,6 +58,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{A5080802-3
 	ProjectSection(SolutionItems) = preProject
 		data\NewFile1.json = data\NewFile1.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoClient", "src\TodoClient\TodoClient.csproj", "{51FE2A20-B150-4FF9-998B-4BFE8F2A4F5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +134,10 @@ Global
 		{154170C4-583F-401D-AF90-FABA2678A2FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{154170C4-583F-401D-AF90-FABA2678A2FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{154170C4-583F-401D-AF90-FABA2678A2FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51FE2A20-B150-4FF9-998B-4BFE8F2A4F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51FE2A20-B150-4FF9-998B-4BFE8F2A4F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51FE2A20-B150-4FF9-998B-4BFE8F2A4F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51FE2A20-B150-4FF9-998B-4BFE8F2A4F5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1C7212CC-5BD2-4280-AFA9-5AE9AF7D0FBE} = {B3F3DAF1-2997-40ED-A242-50F40C0AEF75}
@@ -152,5 +159,6 @@ Global
 		{B08BE68F-F680-4A0E-982F-5915BE706D10} = {B3F3DAF1-2997-40ED-A242-50F40C0AEF75}
 		{B5ED31E6-636A-48CE-B565-F3060B7ECA18} = {B08BE68F-F680-4A0E-982F-5915BE706D10}
 		{154170C4-583F-401D-AF90-FABA2678A2FF} = {B33CAC67-76DA-43C3-89F5-0E1437086644}
+		{51FE2A20-B150-4FF9-998B-4BFE8F2A4F5B} = {B3F3DAF1-2997-40ED-A242-50F40C0AEF75}
 	EndGlobalSection
 EndGlobal
