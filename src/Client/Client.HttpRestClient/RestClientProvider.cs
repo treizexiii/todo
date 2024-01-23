@@ -11,10 +11,10 @@ public static class RestClientProvider
         {
             client.BaseAddress = new Uri(url);
         });
-        services.AddHttpClient<IItemServiceProxy, TodoHttpRestClient>(client =>
-        {
-            client.BaseAddress = new Uri(url);
-        });
+        // services.AddHttpClient<IItemServiceProxy, TodoHttpRestClient>(client =>
+        // {
+        //     client.BaseAddress = new Uri(url);
+        // });
 
         return services;
     }

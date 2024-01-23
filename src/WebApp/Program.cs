@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using WebApp;
 using WebApp.Services;
 
-const string grpcUrl = "http://todo-api:8080";
+// const string grpcUrl = "http://todo-api:5000";
+const string grpcUrl = "http://192.168.1.65:5000";
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

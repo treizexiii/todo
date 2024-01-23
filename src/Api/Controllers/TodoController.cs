@@ -11,7 +11,7 @@ namespace Api.Controllers;
 public class TodoController(ILogger<TodoController> logger, ITransactionManager transaction, ITodoService todoService)
     : BaseController(logger, transaction)
 {
-    private Guid _userId = Guid.NewGuid();
+    private readonly Guid _userId = Guid.NewGuid();
 
     [HttpGet]
     public async Task<IActionResult> GetTodos()
