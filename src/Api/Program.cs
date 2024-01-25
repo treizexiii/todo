@@ -21,7 +21,7 @@ builder.Services.AddCors(setup =>
 });
 
 builder.Services.AddPostgresContext(builder.Configuration.GetConnectionString("TodoDb") ??
-                                    throw new InvalidOperationException("IdentityDb connection string is null"));
+                                    throw new InvalidOperationException("TodoDb connection string is null"));
 
 builder.Services.AddTransactionManager<TodoDb>();
 
