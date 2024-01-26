@@ -24,6 +24,12 @@ public class TodoDb : DbContext, IDbContext
         base.OnModelCreating(modelBuilder);
     }
 
+    public Task SeedAsync()
+    {
+        Console.WriteLine("Seeding database");
+        return Task.CompletedTask;
+    }
+
     public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
         return await base.Database.BeginTransactionAsync();

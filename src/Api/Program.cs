@@ -1,6 +1,6 @@
 using Core;
-using Database;
-using Database.Context;
+using Persistence.Database;
+using Persistence.Database.Context;
 using Tools.TransactionManager;
 
 var builder = WebApplication.CreateBuilder(args);

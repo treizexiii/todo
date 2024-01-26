@@ -1,9 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
-
-using Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Persistence.Database;
 using Persistence.MigrationTool.Command;
 
 namespace Persistence.MigrationTool;
@@ -17,6 +16,7 @@ internal static class Program
         var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
         var host = BuildHost(env);
+        // await host.RunAsync();
 
         var factory = new CommandFactory(host.Services);
         await factory.ExecuteAsync(args);
@@ -40,7 +40,10 @@ internal static class Program
             services.AddLogging();
             services.AddPostgresContext(context.Configuration.GetConnectionString("TodoDb") ??
                                         throw new InvalidOperationException("TodoDb connection string is null"));
+            services.AddScoped<HelpCommand>();
             services.AddScoped<DatabaseUpdateCommand>();
+            services.AddScoped<DataBaseSeedCommand>();
+            services.AddScoped<DatabaseCreateCommand>();
         });
 
         var host = builder.Build();

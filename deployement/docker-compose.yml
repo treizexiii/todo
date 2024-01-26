@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-  todo-api:
+  api:
     container_name: todo-api
     build:
       context: ../.
@@ -16,13 +16,14 @@ services:
     depends_on:
       - postgres
 
-  todo-db-command:
+  db-command:
     container_name: todo-db-command
     build:
       context: ../.
       dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    tty: true
     extra_hosts:
       - "todo-db:${IP_ADDRESS}"
     depends_on:
@@ -53,7 +54,7 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - "${DATA_DIR}:/var/lib/postgresql/data"
+      - "${DATA_DIR}/postgres:/var/lib/postgresql/data"
 
 #  todo-web-app:
 #    container_name: todo-web-app

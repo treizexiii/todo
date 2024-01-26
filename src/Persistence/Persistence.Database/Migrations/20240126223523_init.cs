@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Database.Migrations
+namespace Persistence.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,10 +19,10 @@ namespace Database.Migrations
                     title = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     iscompleted = table.Column<bool>(type: "boolean", nullable: false),
-                    createdat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updatedat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    duedate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    completedat = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    createdat = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    updatedat = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    duedate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    completedat = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -37,10 +37,10 @@ namespace Database.Migrations
                     title = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     iscompleted = table.Column<bool>(type: "boolean", nullable: false),
-                    createdat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    updatedat = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    duedate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    completedat = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    createdat = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    updatedat = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    duedate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    completedat = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     todoid = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

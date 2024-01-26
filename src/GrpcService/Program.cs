@@ -1,6 +1,6 @@
 using Core;
-using Database;
 using GrpcService.Services;
+using Persistence.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 
