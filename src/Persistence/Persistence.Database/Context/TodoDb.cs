@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Tools.TransactionManager;
 
-namespace Database.Context;
+namespace Persistence.Database.Context;
 
 public class TodoDb : DbContext, IDbContext
 {
@@ -22,6 +22,12 @@ public class TodoDb : DbContext, IDbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+    }
+
+    public Task SeedAsync()
+    {
+        Console.WriteLine("Seeding database");
+        return Task.CompletedTask;
     }
 
     public async Task<IDbContextTransaction> BeginTransactionAsync()

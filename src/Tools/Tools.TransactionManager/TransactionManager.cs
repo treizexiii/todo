@@ -13,6 +13,7 @@ public class TransactionManager(ILogger<TransactionManager> logger, IDbContext c
             var transaction = new TransactionInfo(userId);
             var newTransaction = await context.BeginTransactionAsync();
             transaction.AddTransaction(context, newTransaction);
+            _transaction = transaction;
             logger.LogInformation("Transaction started for user {UserId}", userId);
         }
         catch (Exception e)

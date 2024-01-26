@@ -1,10 +1,9 @@
-using System.Reflection.Metadata;
 using Core.Entities;
 using Core.Repositories;
-using Database.Context;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Database.Context;
 
-namespace Database.Repositories;
+namespace Persistence.Database.Repositories;
 
 public class TodosRepository(TodoDb context) : ITodosRepository
 {

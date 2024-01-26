@@ -18,7 +18,7 @@ public class TodoService(ITodosRepository repository) : ITodoService
 
     public async Task<Todo> CreateAsync(CreateTodo todo)
     {
-        var utc = DateTime.UtcNow;
+        var utc = DateTimeOffset.UtcNow;
         var todoEntity = new Todo
         {
             Id = Guid.NewGuid(),

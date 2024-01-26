@@ -10,10 +10,11 @@ dotnet ef database update --project .\src\Authentication\Authentication.Persiste
 ```
 
 ## Todo:
+
 ```bash
-dotnet ef migrations add 'Init' --project .\src\Database\Database.csproj  --startup-project .\src\Authentication\Authentication.IdentityServer\Authentication.IdentityServer.csproj --context TodoDb
+dotnet ef migrations add 'init' --project .\src\Persistence\Persistence.Database\Persistence.Database.csproj --startup-project .\src\Persistence\Persistence.MigrationTool\Persistence.MigrationTool.csproj --context TodoDb
 ```
 
 ```bash
-dotnet ef database update --project .\src\Database\Database.csproj --startup-project .\src\Authentication\Authentication.IdentityServer\Authentication.IdentityServer.csproj --context TodoDb
+dotnet ef database update --project .\src\Database\Database.csproj --startup-project .\src\Api\Api.csproj --context TodoDb
 ```

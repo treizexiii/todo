@@ -31,8 +31,8 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Core\Core.csproj"/>
-        <ProjectReference Include="..\Database\Database.csproj"/>
         <ProjectReference Include="..\GrpcMessage\GrpcMessage.csproj"/>
+        <ProjectReference Include="..\Persistence\Persistence.Database\Persistence.Database.csproj" />
     </ItemGroup>
 
     <ItemGroup>

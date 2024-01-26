@@ -1,0 +1,40 @@
+@using Core.Dto
+
+@inject TodoService TodoService
+
+<h3>TodoComponent</h3>
+
+@if (_todoDto == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <div>
+        <h4>@_todoDto.Title</h4>
+        <p>@_todoDto.Description</p>
+        <p>@_todoDto.CreatedAt</p>
+        <p>@_todoDto.UpdatedAt</p>
+        <p>@_todoDto.IsCompleted</p>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Guid Id { get; set; }
+
+    private TodoDto? _todoDto;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await OnLoad();
+    }
+
+    private async Task OnLoad()
+    {
+        _todoDto = await TodoService.GetAsync(Id);
+    }
+
+}

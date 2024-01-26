@@ -1,8 +1,6 @@
 using Authentication.Persistence;
 using Authentication.Persistence.Database;
 using Authentication.Services;
-using Database;
-using Database.Context;
 using Tools.TransactionManager;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,14 +13,9 @@ builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNa
 builder.Services.AddIdentityDb(builder.Configuration.GetConnectionString("IdentityDb") ??
                                throw new InvalidOperationException("IdentityDb connection string is null"));
 
-builder.Services.AddPostgresContext(builder.Configuration.GetConnectionString("TodoDb") ??
-                                    throw new InvalidOperationException("TodoDb connection string is null"));
-
 builder.Services.AddServices();
 
-builder.Services.AddMultiContextTransactionManager([
-    typeof(IdentityDb), typeof(TodoDb)
-]);
+builder.Services.AddTransactionManager<IdentityDb>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

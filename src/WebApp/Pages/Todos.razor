@@ -1,0 +1,105 @@
+﻿@page "/todos"
+@using TodoService = WebApp.Services.TodoService
+@using Core.Dto
+@inject HttpClient Http
+@inject TodoService TodoService
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Todos</h1>
+
+@* <p>This component demonstrates fetching data from the server.</p> *@
+
+@if (_todos == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>DueDate</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var todo in _todos)
+        {
+            <tr @onclick="() => SelectTodo(todo.Id)">
+                <td>@todo.Title</td>
+                <td>@todo.Description</td>
+                <td>@todo.DueDate</td>
+            </tr>
+        }
+        <tr>
+            <td>
+                <input class="form-control" type="text" @bind="_title"/>
+            </td>
+            <td>
+                <input class="form-control" type="text" @bind="_description"/>
+            </td>
+            <td>
+                <input class="form-control" type="datetime-local" @bind="_dueDate"/>
+            </td>
+            <td>
+                <button class="btn btn-outline-primary" @onclick="AddTodo">
+                    add
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+}
+
+@if (_selectedTodo != Guid.Empty)
+{
+    <TodoComponent Id="@_selectedTodo"/>
+}
+
+
+
+@code {
+    private List<TodoHeaderDto>? _todos;
+    private string? _title;
+    private string? _description;
+    private DateTime? _dueDate;
+
+    private Guid _selectedTodo = Guid.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var todos = await TodoService.GetAllAsync();
+        _todos = todos.ToList();
+    }
+
+    private async Task AddTodo()
+    {
+        if (string.IsNullOrWhiteSpace(_title))
+        {
+            return;
+        }
+        var newTodo = new CreateTodo(_title, _description, _dueDate);
+        var todo = await TodoService.CreateAsync(newTodo);
+        var dto = new TodoHeaderDto(todo.Id, todo.Title, todo.Description, todo.IsCompleted, todo.CreatedAt, todo.UpdatedAt, null, null);
+        _todos?.Add(dto);
+
+        _title = null;
+        _description = null;
+        _dueDate = null;
+
+        StateHasChanged();
+    }
+
+    private Task SelectTodo(Guid todoId)
+    {
+        _selectedTodo = todoId;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+}

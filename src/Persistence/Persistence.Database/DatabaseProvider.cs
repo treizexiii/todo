@@ -1,12 +1,12 @@
 using Core.Repositories;
-using Database.Context;
-using Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Database.Context;
+using Persistence.Database.Repositories;
 
-namespace Database;
+namespace Persistence.Database;
 
-public static class ContextProvider
+public static class DatabaseProvider
 {
     public static IServiceCollection AddInMemoryContext(this IServiceCollection services, string connectionString)
     {

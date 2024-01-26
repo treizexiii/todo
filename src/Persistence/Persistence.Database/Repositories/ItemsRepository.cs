@@ -1,9 +1,9 @@
 using Core.Entities;
 using Core.Repositories;
-using Database.Context;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Database.Context;
 
-namespace Database.Repositories;
+namespace Persistence.Database.Repositories;
 
 public class ItemsRepository(TodoDb context) : IItemsRepository
 {

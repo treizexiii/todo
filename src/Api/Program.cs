@@ -1,6 +1,6 @@
 using Core;
-using Database;
-using Database.Context;
+using Persistence.Database;
+using Persistence.Database.Context;
 using Tools.TransactionManager;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,9 +9,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers();
+builder.Services.AddCors(setup =>
+{
+    setup.AddPolicy("*", policyBuilder =>
+    {
+        policyBuilder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddPostgresContext(builder.Configuration.GetConnectionString("TodoDb") ??
-                                    throw new InvalidOperationException("IdentityDb connection string is null"));
+                                    throw new InvalidOperationException("TodoDb connection string is null"));
 
 builder.Services.AddTransactionManager<TodoDb>();
 
@@ -21,11 +31,9 @@ builder.Services.AddCore();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(setup => { setup.AddDefaultPolicy(policyBuilder => { policyBuilder.AllowAnyOrigin(); }); });
-
 var app = builder.Build();
 
-app.UseCors();
+app.UseCors("*");
 app.UseRouting();
 app.MapControllers();
 
