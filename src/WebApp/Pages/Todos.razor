@@ -1,7 +1,8 @@
 ﻿@page "/todos"
 @using TodoService = WebApp.Services.TodoService
 @using Core.Dto
-@inject HttpClient Http
+@using WebApp.Tools
+@inject IJsLogger<Todos> Logger
 @inject TodoService TodoService
 
 <PageTitle>Weather</PageTitle>
@@ -73,6 +74,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await Logger.LogInformation("OnInitializedAsync");
         var todos = await TodoService.GetAllAsync();
         _todos = todos.ToList();
     }
