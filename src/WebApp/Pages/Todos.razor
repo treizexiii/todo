@@ -74,9 +74,9 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        Logger.LogInformation("OnInitializedAsync");
-        // var todos = await TodoService.GetAllAsync();
-        // _todos = todos.ToList();
+        await Logger.LogInformation("OnInitializedAsync");
+        var todos = await TodoService.GetAllAsync();
+        _todos = todos.ToList();
     }
 
     private async Task AddTodo()

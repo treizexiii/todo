@@ -2,63 +2,57 @@ using Microsoft.JSInterop;
 
 namespace WebApp.Tools;
 
-public abstract class AbstractJsConsole : IJsLogger
+public class JsConsole<T>(IJSRuntime jsRuntime) :  IJsLogger<T>
 {
-    protected readonly IJSRuntime _jsRuntime;
+    private readonly string _prefix = typeof(T).Name;
 
-    public AbstractJsConsole(IJSRuntime jsRuntime)
+    public async Task LogInformation(string message)
     {
-        _jsRuntime = jsRuntime;
+        await jsRuntime.InvokeVoidAsync("console.log", $"[{_prefix}]\n" + message);
     }
 
-    public abstract void LogInformation(string message);
+    public async Task LogWarning(string message)
+    {
+        await jsRuntime.InvokeVoidAsync("console.warn", $"[{_prefix}]\n" + message);
+    }
 
-    public abstract void LogWarning(string message);
+    public async Task LogError(string message)
+    {
+        await jsRuntime.InvokeVoidAsync("console.error", $"[{_prefix}]\n" + message);
+    }
 
-    public  abstract void LogError(string message);
+    public async Task LogError(Exception exception)
+    {
+        await jsRuntime.InvokeVoidAsync("console.error", $"[{_prefix}]\n" + exception.Message);
+    }
+
+    // public async Task LogDebug(string message)
+    // {
+    //     await jsRuntime.InvokeVoidAsync("console.debug", $"[{_prefix}]\n" + message);
+    // }
+    //
+    // public async Task LogDebug(object obj)
+    // {
+    //     await jsRuntime.InvokeVoidAsync("console.debug", $"[{_prefix}]\n" + obj);
+    // }
 }
 
-public class JsConsole<T> : AbstractJsConsole, IJsLogger<T>
+public interface IJsLogger<T>
 {
-    private readonly string _prefix;
+    Task LogInformation(string message);
+    Task LogWarning(string message);
+    Task LogError(string message);
+    Task LogError(Exception exception);
 
-    public JsConsole(IJSRuntime jsRuntime) : base(jsRuntime)
-    {
-        _prefix = typeof(T).Name;
-    }
-
-    public override void LogInformation(string message)
-    {
-        _jsRuntime.InvokeVoidAsync("console.log", message);
-    }
-
-    public override void LogWarning(string message)
-    {
-        _jsRuntime.InvokeVoidAsync("console.warn", message);
-    }
-
-    public override void LogError(string message)
-    {
-        _jsRuntime.InvokeVoidAsync("console.error", message);
-    }
-}
-
-public interface IJsLogger
-{
-    void LogInformation(string message);
-    void LogWarning(string message);
-    void LogError(string message);
-}
-
-public interface IJsLogger<T> : IJsLogger
-{
+    // Task LogDebug(string message);
+    // Task LogDebug(object exception);
 }
 
 public static class ConsoleExtensions
 {
     public static IServiceCollection AddConsole(this IServiceCollection services)
     {
-        services.AddScoped<IJsLogger, AbstractJsConsole>();
+        services.AddScoped(typeof(IJsLogger<>),typeof(JsConsole<>));
         return services;
     }
 }
