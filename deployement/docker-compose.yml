@@ -2,14 +2,14 @@ version: "3"
 
 services:
   api:
-    container_name: todo-api
+    container_name: api
     build:
       context: ../.
       dockerfile: src/Api/Dockerfile
     ports:
       - "5000:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
     extra_hosts:
       - "todo-db:${IP_ADDRESS}"
@@ -17,12 +17,12 @@ services:
       - postgres
 
   db-command:
-    container_name: todo-db-command
+    container_name: db-command
     build:
       context: ../.
       dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
     tty: true
     extra_hosts:
       - "todo-db:${IP_ADDRESS}"
@@ -37,7 +37,7 @@ services:
     ports:
       - "7000:80"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
     extra_hosts:
       - "identity-db:${IP_ADDRESS}"
@@ -56,36 +56,21 @@ services:
     volumes:
       - "${DATA_DIR}/postgres:/var/lib/postgresql/data"
 
-#  todo-web-app:
-#    container_name: todo-web-app
-#    build:
-#      context: ../.
-#      dockerfile: src/WebApp/Dockerfile
-#    ports:
-#      - "8080:80"
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-#      - ASPNETCORE_URLS=http://+:80
-#    extra_hosts:
-#      - "todo-api:${IP_ADDRESS}"
-#    depends_on:
-#      - todo-api
-#
-#  web-app:
-#    build:
-#      context: ../.
-#      dockerfile: src/WebApp/Dockerfile
-#    container_name: web-app
-#    ports:
-#      - "5000:80"
-#    depends_on:
-#      - grpc-server
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=Development
-#      - ASPNETCORE_URLS=http://+:80
-#      - GRPC_SERVER_URL=http://grpc-server:5001
-#    extra_hosts:
-#      - "grpc-server:192.168.1.150"
+  web-app:
+    container_name: web-app
+    build:
+      context: ../.
+      dockerfile: src/WebApp/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://+:80
+    extra_hosts:
+      - "todo-api:${IP_ADDRESS}"
+    depends_on:
+      - api
+
 #  grpc-server:
 #    build:
 #      context: ../.
