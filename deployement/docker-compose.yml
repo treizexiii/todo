@@ -56,20 +56,21 @@ services:
     volumes:
       - "${DATA_DIR}/postgres:/var/lib/postgresql/data"
 
-  web-app:
-    container_name: web-app
-    build:
-      context: ../.
-      dockerfile: src/WebApp/Dockerfile
-    ports:
-      - "8080:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=http://+:80
-    extra_hosts:
-      - "todo-api:${IP_ADDRESS}"
-    depends_on:
-      - api
+#  web-app:
+#    container_name: web-app
+#    build:
+#      context: ../.
+#      dockerfile: src/WebApp/Dockerfile
+#    ports:
+#      - "8080:80"
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+#      - ASPNETCORE_URLS=http://+:80
+#      - API_URL=${IP_ADDRESS}:5000
+#    extra_hosts:
+#      - "todo-api:${IP_ADDRESS}"
+#    depends_on:
+#      - api
 
 #  grpc-server:
 #    build:
