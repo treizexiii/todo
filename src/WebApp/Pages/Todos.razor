@@ -2,14 +2,13 @@
 @using TodoService = WebApp.Services.TodoService
 @using Core.Dto
 @using WebApp.Tools
+
 @inject IJsLogger<Todos> Logger
 @inject TodoService TodoService
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Todos</PageTitle>
 
 <h1>Todos</h1>
-
-@* <p>This component demonstrates fetching data from the server.</p> *@
 
 @if (_todos == null)
 {
@@ -19,49 +18,39 @@
 }
 else
 {
-    <table class="table">
-        <thead>
+    <table class="table table-hover">
+        <thead class="thead-dark">
         <tr>
-            <th>Title</th>
-            <th>Description</th>
-            <th>DueDate</th>
-            <th></th>
+            <th scope="col">Title</th>
+            <th scope="col"></th>
+            <th scope="col">DueDate</th>
+            <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         @foreach (var todo in _todos)
         {
             <tr @onclick="() => SelectTodo(todo.Id)">
-                <td>@todo.Title</td>
-                <td>@todo.Description</td>
-                <td>@todo.DueDate</td>
+                <td colspan="2">@todo.Title</td>
+                <td>@todo.DueDate?.ToFrenchDate()</td>
+                <td></td>
             </tr>
         }
-        <tr>
-            <td>
-                <input class="form-control" type="text" @bind="_title"/>
-            </td>
-            <td>
-                <input class="form-control" type="text" @bind="_description"/>
-            </td>
-            <td>
-                <input class="form-control" type="datetime-local" @bind="_dueDate"/>
-            </td>
-            <td>
-                <button class="btn btn-outline-primary" @onclick="AddTodo">
-                    add
-                </button>
-            </td>
-        </tr>
         </tbody>
     </table>
+    <div class="d-flex justify-content-between">
+        <input class="form-control m-2" type="text" @bind="_title"/>
+        <input class="form-control m-2" type="datetime-local" @bind="_dueDate"/>
+        <button class="btn btn-outline-primary m-2" @onclick="AddTodo">
+            add
+        </button>
+    </div>
 }
 
 @if (_selectedTodo != Guid.Empty)
 {
     <TodoComponent Id="@_selectedTodo"/>
 }
-
 
 
 @code {
@@ -85,6 +74,7 @@ else
         {
             return;
         }
+
         var newTodo = new CreateTodo(_title, _description, _dueDate);
         var todo = await TodoService.CreateAsync(newTodo);
         var dto = new TodoHeaderDto(todo.Id, todo.Title, todo.Description, todo.IsCompleted, todo.CreatedAt, todo.UpdatedAt, null, null);

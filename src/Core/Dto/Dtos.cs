@@ -19,7 +19,7 @@ public record TodoDto(
     DateTime UpdatedAt,
     DateTime? DueDate,
     DateTime? CompletedAt,
-    IEnumerable<ItemDto> Items);
+    List<ItemDto> Items);
 
 public record ItemDto(
     Guid Id,
