@@ -22,4 +22,4 @@ WORKDIR /usr/share/nginx/html
 RUN apk add jq
 COPY --from=publish /app/publish/wwwroot .
 COPY src/WebApp/nginx.conf /etc/nginx/nginx.conf
-COPY ["src/WebApp/script.sh", "/docker-entrypoint.d/40-script.sh"]
+COPY ["src/WebApp/update-env.sh", "/docker-entrypoint.d/40-update-env.sh"]

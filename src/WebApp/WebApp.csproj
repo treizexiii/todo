@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="script.sh">
+      <None Update="update-env.sh">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="nginx.conf">
