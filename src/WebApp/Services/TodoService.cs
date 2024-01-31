@@ -5,6 +5,8 @@ namespace WebApp.Services;
 
 public class TodoService(ITodoServiceProxy todoServiceProxy)
 {
+    public TodoDto? _todo { get; set; } = null;
+
     public async Task<IEnumerable<TodoHeaderDto>> GetAllAsync()
     {
         var todos = await todoServiceProxy.GetAllAsync();
@@ -15,8 +17,8 @@ public class TodoService(ITodoServiceProxy todoServiceProxy)
     public async Task<TodoDto> GetAsync(Guid id)
     {
         var todo = await todoServiceProxy.GetAsync(id);
-
-        return todo;
+        _todo = todo;
+        return _todo;
     }
 
     public async Task<TodoDto> CreateAsync(CreateTodo todo)

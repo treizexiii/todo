@@ -24,6 +24,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "documentation", "documentation", "{6C65086A-2E97-47B9-8581-1B876A3F2749}"
 	ProjectSection(SolutionItems) = preProject
 		documentation\MigrationsDocumentation.md = documentation\MigrationsDocumentation.md
+		documentation\WebApp.md = documentation\WebApp.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcClient", "src\GrpcClient\GrpcClient.csproj", "{6B8A4445-6A96-4263-A6F2-E7B51D99370B}"

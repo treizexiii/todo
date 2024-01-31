@@ -16,7 +16,7 @@ else
         <h4>@_todoDto.Title</h4>
         <p>@_todoDto.Description</p>
         <p>@_todoDto.CreatedAt</p>
-        <p>@_todoDto.UpdatedAt</p>
+        <p>@_todoDto.DueDate</p>
         <p>@_todoDto.IsCompleted</p>
     </div>
 }
@@ -27,7 +27,7 @@ else
 
     private TodoDto? _todoDto;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await OnLoad();
     }
@@ -36,5 +36,4 @@ else
     {
         _todoDto = await TodoService.GetAsync(Id);
     }
-
 }
