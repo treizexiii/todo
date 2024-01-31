@@ -97,11 +97,11 @@ else
         StateHasChanged();
     }
 
-    private Task SelectTodo(Guid todoId)
+    private async Task SelectTodo(Guid todoId)
     {
+        await Logger.LogInformation($"Select Todo {todoId}");
         _selectedTodo = todoId;
         StateHasChanged();
-        return Task.CompletedTask;
     }
 
 }

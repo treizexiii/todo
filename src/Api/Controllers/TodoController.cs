@@ -17,9 +17,11 @@ public class TodoController(ILogger<TodoController> logger, ITransactionManager 
     public async Task<IActionResult> GetTodos()
     {
         Logger.LogInformation("GetTodos");
+        Logger.LogInformation("UserId: {UserId}", _userId);
         try
         {
             await Transaction.BeginTransactionAsync(_userId);
+            Logger.LogInformation("Transaction started");
             var todos = await todoService.GetAllAsync(new TodoFilterOptions
             {
                 IsCompleted = false
