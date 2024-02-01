@@ -1,10 +1,9 @@
 ﻿@page "/todos"
-@using TodoService = WebApp.Services.TodoService
 @using Core.Dto
 @using WebApp.Tools
 
 @inject IJsLogger<Todos> Logger
-@inject TodoService TodoService
+@inject TodoServiceFacade TodoServiceFacade
 
 <PageTitle>Todos</PageTitle>
 
@@ -23,7 +22,7 @@ else
         <tr>
             <th scope="col">Title</th>
             <th scope="col"></th>
-            <th scope="col">DueDate</th>
+            <th scope="col">Created at</th>
             <th scope="col"></th>
         </tr>
         </thead>
@@ -32,7 +31,7 @@ else
         {
             <tr @onclick="() => SelectTodo(todo.Id)">
                 <td colspan="2">@todo.Title</td>
-                <td>@todo.DueDate?.ToFrenchDate()</td>
+                <td>@todo.CreatedAt.ToFrenchDate()</td>
                 <td></td>
             </tr>
         }
@@ -40,7 +39,7 @@ else
     </table>
     <div class="d-flex justify-content-between">
         <input class="form-control m-2" type="text" @bind="_title"/>
-        <input class="form-control m-2" type="datetime-local" @bind="_dueDate"/>
+        @* <input class="form-control m-2" type="datetime-local" @bind="_dueDate"/> *@
         <button class="btn btn-outline-primary m-2" @onclick="AddTodo">
             add
         </button>
@@ -64,7 +63,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         await Logger.LogInformation("OnInitializedAsync");
-        var todos = await TodoService.GetAllAsync();
+        var todos = await TodoServiceFacade.GetAllAsync();
         _todos = todos.ToList();
     }
 
@@ -76,7 +75,7 @@ else
         }
 
         var newTodo = new CreateTodo(_title, _description, _dueDate);
-        var todo = await TodoService.CreateAsync(newTodo);
+        var todo = await TodoServiceFacade.CreateAsync(newTodo);
         var dto = new TodoHeaderDto(todo.Id, todo.Title, todo.Description, todo.IsCompleted, todo.CreatedAt, todo.UpdatedAt, null, null);
         _todos?.Add(dto);
 

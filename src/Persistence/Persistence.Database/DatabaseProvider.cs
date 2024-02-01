@@ -25,6 +25,7 @@ public static class DatabaseProvider
         {
             options.UseNpgsql(connectionString);
             options.UseLowerCaseNamingConvention();
+            options.UseLazyLoadingProxies();
         });
         AddRepositories(services);
 

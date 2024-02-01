@@ -59,8 +59,11 @@ public class ItemService(IItemsRepository repository) : IItemService
         var itemEntity = await repository.GetAsync(id);
         if (itemEntity is null) throw new FileNotFoundException($"Item with id {id} not found");
 
-        itemEntity.IsCompleted = true;
-        itemEntity.CompletedAt = DateTime.UtcNow;
+        itemEntity.IsCompleted = !itemEntity.IsCompleted;
+
+        itemEntity.CompletedAt = itemEntity.IsCompleted ?
+            DateTime.UtcNow :
+            null;
         itemEntity.UpdatedAt = DateTime.UtcNow;
 
         await repository.UpdateAsync(itemEntity);

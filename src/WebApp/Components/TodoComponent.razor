@@ -2,7 +2,7 @@
 @using WebApp.Tools
 
 @inject IJsLogger<TodoComponent> Logger
-@inject TodoService TodoService
+@inject TodoServiceFacade TodoServiceFacade
 
 @if (_todoDto == null)
 {
@@ -70,52 +70,54 @@ else
 
     private async Task OnLoad()
     {
-        _todoDto = await TodoService.GetAsync(Id);
+        _todoDto = await TodoServiceFacade.GetAsync(Id);
         _items = _todoDto?.Items;
         await Logger.LogInformation("Todo loaded");
     }
 
     private async Task AddNewItem()
     {
-        if (_newItem != null)
+        if (_todoDto != null)
         {
-            var utc = DateTime.UtcNow;
-            var newItem = new ItemDto(
-                Guid.NewGuid(),
-                _newItem,
-                null,
-                false,
-                utc,
-                utc,
-                null,
-                null
-            );
-            _todoDto?.Items.Add(newItem);
-            _items = _todoDto?.Items;
-            _newItem = null;
-            await Logger.LogInformation("New item added");
-        }
-        else
-        {
-            await Logger.LogWarning("New item title is missing");
+            if (_newItem != null)
+            {
+                var newItem = new CreateItem(
+                    _newItem,
+                    null,
+                    null,
+                    _todoDto.Id
+                );
+                var itemDto = await TodoServiceFacade.CreateItemAsync(newItem);
+                _todoDto?.Items.Add(itemDto);
+                _items = _todoDto?.Items;
+                _newItem = null;
+                await Logger.LogInformation("New item added");
+            }
+            else
+            {
+                await Logger.LogWarning("New item title is missing");
+            }
         }
 
         StateHasChanged();
     }
 
-    private Task CheckItem(Guid itemId)
+    private async Task CheckItem(Guid itemId)
     {
         var item = _todoDto?.Items.FirstOrDefault(x => x.Id == itemId);
         if (item != null)
         {
+            await TodoServiceFacade.CompleteItemAsync(item.TodoId, item.Id);
+
             var completedItem = item with { IsCompleted = !item.IsCompleted };
             _todoDto?.Items.Remove(item);
             _todoDto?.Items.Add(completedItem);
             _items = _todoDto?.Items;
-            StateHasChanged();
+
+            await Logger.LogInformation("Item checked");
         }
 
-        return Task.CompletedTask;
+        StateHasChanged();
     }
 
 }
