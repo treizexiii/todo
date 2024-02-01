@@ -1,4 +1,9 @@
-param($tag, $registry, [switch]$arm64, [switch]$nobuild, [switch]$push)
+param($tag,
+    $registry,
+    [switch]$arm64,
+    [switch]$nobuild,
+    [switch]$push
+)
 
 if ($null -eq $tag)
 {
