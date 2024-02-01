@@ -1,8 +1,8 @@
 @using Core.Dto
+@using WebApp.Tools
 
-@inject TodoService TodoService
-
-<h3>TodoComponent</h3>
+@inject IJsLogger<TodoComponent> Logger
+@inject TodoServiceFacade TodoServiceFacade
 
 @if (_todoDto == null)
 {
@@ -12,20 +12,56 @@
 }
 else
 {
-    <div>
-        <h4>@_todoDto.Title</h4>
-        <p>@_todoDto.Description</p>
-        <p>@_todoDto.CreatedAt</p>
-        <p>@_todoDto.DueDate</p>
-        <p>@_todoDto.IsCompleted</p>
+    <div class="list-group">
+        <div class="list-group-item" aria-current="true">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@_todoDto.Title</h5>
+                <small>@_todoDto.CreatedAt.ToFrenchDate()</small>
+            </div>
+            <p class="mb-1">@_todoDto.Description</p>
+        </div>
+        <div class="list-group-item" aria-current="true">
+            <ul class="list-group list-group-flush">
+                @foreach (var item in _todoDto.Items.OrderBy(i => i.CreatedAt))
+                {
+                    <li class="list-group-item list-group-item-action" @onclick="() => CheckItem(item.Id)">
+                        <div class="d-flex flex-row w-100 justify-content-between">
+                            @item.Title
+                            @if (item.IsCompleted)
+                            {
+                                <span class="badge bg-success rounded-pill">
+                                    <i class="bi bi-check2-circle"></i>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning rounded-pill">
+                                    <i class="bi bi-circle"></i>
+                                </span>
+                            }
+                        </div>
+                    </li>
+                }
+                <li class="list-group-item list-group-item-action">
+                    <div class="d-flex flex-row w-100 justify-content-between">
+                        <input type="text" class="form-control w-75" @bind="_newItem"/>
+                        <button type="button" class="btn btn-primary" @onclick="AddNewItem">
+                            <i class="bi bi-file-earmark-plus"></i>
+                        </button>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
     </div>
 }
 
 @code {
-    [Parameter]
-    public Guid Id { get; set; }
+    [Parameter] public Guid Id { get; set; }
 
     private TodoDto? _todoDto;
+    private List<ItemDto>? _items;
+    private string? _newItem;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -34,6 +70,54 @@ else
 
     private async Task OnLoad()
     {
-        _todoDto = await TodoService.GetAsync(Id);
+        _todoDto = await TodoServiceFacade.GetAsync(Id);
+        _items = _todoDto?.Items;
+        await Logger.LogInformation("Todo loaded");
     }
+
+    private async Task AddNewItem()
+    {
+        if (_todoDto != null)
+        {
+            if (_newItem != null)
+            {
+                var newItem = new CreateItem(
+                    _newItem,
+                    null,
+                    null,
+                    _todoDto.Id
+                );
+                var itemDto = await TodoServiceFacade.CreateItemAsync(newItem);
+                _todoDto?.Items.Add(itemDto);
+                _items = _todoDto?.Items;
+                _newItem = null;
+                await Logger.LogInformation("New item added");
+            }
+            else
+            {
+                await Logger.LogWarning("New item title is missing");
+            }
+        }
+
+        StateHasChanged();
+    }
+
+    private async Task CheckItem(Guid itemId)
+    {
+        var item = _todoDto?.Items.FirstOrDefault(x => x.Id == itemId);
+        if (item != null)
+        {
+            await TodoServiceFacade.CompleteItemAsync(item.TodoId, item.Id);
+
+            var completedItem = item with { IsCompleted = !item.IsCompleted };
+            _todoDto?.Items.Remove(item);
+            _todoDto?.Items.Add(completedItem);
+            _items = _todoDto?.Items;
+
+            await Logger.LogInformation("Item checked");
+        }
+
+        StateHasChanged();
+    }
+
 }

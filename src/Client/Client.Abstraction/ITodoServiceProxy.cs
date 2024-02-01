@@ -12,5 +12,5 @@ public interface ITodoServiceProxy
 
     Task<ItemDto> CreateItemAsync(CreateItem item);
     Task<ItemDto> UpdateItemAsync(UpdateItem item);
-    Task CompleteItemAsync(Guid id);
+    Task CompleteItemAsync(Guid todoId, Guid itemId);
 }

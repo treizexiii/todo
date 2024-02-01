@@ -27,7 +27,7 @@ public abstract class BaseController(ILogger<BaseController> logger, ITransactio
 
     protected IActionResult Ok(string message)
     {
-        var response = new ApiResponse()
+        var response = new ApiResponse
         {
             Version = "1.0",
             Code = 200,

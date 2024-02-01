@@ -3,10 +3,8 @@ using Core.Dto;
 
 namespace WebApp.Services;
 
-public class TodoService(ITodoServiceProxy todoServiceProxy)
+public class TodoServiceFacade(ITodoServiceProxy todoServiceProxy)
 {
-    public TodoDto? _todo { get; set; } = null;
-
     public async Task<IEnumerable<TodoHeaderDto>> GetAllAsync()
     {
         var todos = await todoServiceProxy.GetAllAsync();
@@ -16,9 +14,7 @@ public class TodoService(ITodoServiceProxy todoServiceProxy)
 
     public async Task<TodoDto> GetAsync(Guid id)
     {
-        var todo = await todoServiceProxy.GetAsync(id);
-        _todo = todo;
-        return _todo;
+        return await todoServiceProxy.GetAsync(id);
     }
 
     public async Task<TodoDto> CreateAsync(CreateTodo todo)
@@ -33,5 +29,24 @@ public class TodoService(ITodoServiceProxy todoServiceProxy)
         var updatedTodo = await todoServiceProxy.UpdateTodoAsync(todo);
 
         return updatedTodo;
+    }
+
+    public async Task<ItemDto> CreateItemAsync(CreateItem item)
+    {
+        var createdItem = await todoServiceProxy.CreateItemAsync(item);
+
+        return createdItem;
+    }
+
+    public async Task<ItemDto> UpdateItemAsync(UpdateItem item)
+    {
+        var updatedItem = await todoServiceProxy.UpdateItemAsync(item);
+
+        return updatedItem;
+    }
+
+    public async Task CompleteItemAsync(Guid todoId, Guid itemId)
+    {
+        await todoServiceProxy.CompleteItemAsync(todoId, itemId);
     }
 }
