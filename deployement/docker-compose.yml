@@ -41,21 +41,6 @@ services:
     depends_on:
       - postgres
 
-  identity-server:
-    container_name: identity-server
-    build:
-      context: ../.
-      dockerfile: src/Authentication/Authentication.IdentityServer/Dockerfile
-    ports:
-      - "7000:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - ASPNETCORE_URLS=http://+:80
-    extra_hosts:
-      - "identity-db:${IP_ADDRESS}"
-    depends_on:
-      - postgres
-
   web-app:
     container_name: web-app
     build:
@@ -67,6 +52,21 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
       - API_URL=http://${IP_ADDRESS}:5000
+
+#  identity-server:
+#    container_name: identity-server
+#    build:
+#      context: ../.
+#      dockerfile: src/Authentication/Authentication.IdentityServer/Dockerfile
+#    ports:
+#      - "7000:80"
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+#      - ASPNETCORE_URLS=http://+:80
+#    extra_hosts:
+#      - "identity-db:${IP_ADDRESS}"
+#    depends_on:
+#      - postgres
 
 #  grpc-server:
 #    build:
