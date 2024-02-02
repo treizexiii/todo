@@ -1,49 +1,74 @@
+using AspExtension;
 using Core;
 using Persistence.Database;
 using Persistence.Database.Context;
 using Tools.TransactionManager;
 
-var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+namespace Api;
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
-builder.Services.AddControllers();
-builder.Services.AddCors(setup =>
+internal static class Program
 {
-    setup.AddPolicy("*", policyBuilder =>
+    private const string CONFIG_PATH = "Configuration";
+
+    private static readonly string AspEnvironment =
+        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
+    public static void Main(string[] args)
     {
-        policyBuilder
-            .AllowAnyOrigin()
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
-});
+        var builder = WebApplication.CreateBuilder(args);
+        builder.Configuration.ConfigureHost(CONFIG_PATH, AspEnvironment);
+        builder.AddServices();
 
-builder.Services.AddPostgresContext(builder.Configuration.GetConnectionString("TodoDb") ??
-                                    throw new InvalidOperationException("TodoDb connection string is null"));
+        var app = builder.Build();
+        app.ConfigureApp();
+        app.Run();
+    }
 
-builder.Services.AddTransactionManager<TodoDb>();
+    // Add services to the container.
+    private static void AddServices(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddRouting(options => options.LowercaseUrls = true);
+        builder.Services.AddControllers();
+        builder.Services.AddCors(setup =>
+        {
+            setup.AddPolicy("*", policyBuilder =>
+            {
+                policyBuilder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
 
-builder.Services.AddCore();
+        builder.Services.AddPostgresContext(builder.Configuration.BuildPostgresConnectionString());
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        builder.Services.AddTransactionManager<TodoDb>();
 
-var app = builder.Build();
+        builder.Services.AddCore();
 
-app.UseCors("*");
-app.UseRouting();
-app.MapControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+    }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static WebApplication ConfigureApp(this WebApplication app)
+    {
+        app.UseCors("*");
+        app.UseRouting();
+        app.MapControllers();
+
+        // Configure the HTTP request pipeline.
+        // if (app.Environment.IsDevelopment())
+        // {
+        //     app.UseSwagger();
+        //     app.UseSwaggerUI();
+        // }
+        app.UseSwagger();
+        app.UseSwaggerUI();
+
+        app.UseHttpsRedirection();
+
+        return app;
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.Run();

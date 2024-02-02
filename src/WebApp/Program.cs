@@ -1,3 +1,4 @@
+using AspExtension;
 using Client.HttpRestClient;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -7,7 +8,8 @@ using WebApp.Tools;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Configuration.AddJsonFile("appsettings.json", optional: false);
+builder.Configuration.ConfigureHost("configuration", "Development");
+builder.Configuration.AddJsonFile("configuration/appsettings.json", optional: false);
 
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");

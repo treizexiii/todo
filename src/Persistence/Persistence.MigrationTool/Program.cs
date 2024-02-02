@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+using AspExtension;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,11 +11,14 @@ namespace Persistence.MigrationTool;
 
 internal static class Program
 {
+    private const string CONFIG_PATH = "Configuration";
+    private static readonly string Environment = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
+
     public static async Task Main(string[] args)
     {
         Console.WriteLine("Hello, Todo-db!");
 
-        var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        var env = System.Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
         var host = BuildHost(env);
         // await host.RunAsync();
@@ -24,16 +29,11 @@ internal static class Program
 
     private static IHost BuildHost(string? env)
     {
-        var builder = Host.CreateDefaultBuilder();
-        builder.ConfigureHostConfiguration(configuration =>
-        {
-            configuration.AddEnvironmentVariables();
-            configuration.AddJsonFile("appsettings.json", optional: false);
-            if (env != null)
+        var builder = Host.CreateDefaultBuilder()
+            .ConfigureHostConfiguration(b =>
             {
-                configuration.AddJsonFile($"appsettings.{env}.json", optional: true);
-            }
-        });
+                b.ConfigureHost(CONFIG_PATH, env);
+            });
 
         builder.ConfigureServices((context, services) =>
         {

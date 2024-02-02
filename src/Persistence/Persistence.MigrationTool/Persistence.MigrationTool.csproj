@@ -23,16 +23,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="appsettings.Development.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+      <ProjectReference Include="..\..\Tools\AspExtension\AspExtension.csproj" />
+      <ProjectReference Include="..\Persistence.Database\Persistence.Database.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Persistence.Database\Persistence.Database.csproj" />
+      <None Update="Configuration\appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Configuration\appsettings.Development.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

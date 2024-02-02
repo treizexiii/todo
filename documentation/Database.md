@@ -1,3 +1,23 @@
+# Database
+
+## Configuation
+
+### Connection string
+
+Connection string is build in-app.
+You have to declare in env or in the appsettings.json file the following variables:
+
+```json
+{
+  "DbSecret": {
+    "Host": "{host}",
+    "Port": "{port}",
+    "User": "{user}",
+    "Password": "{password}",
+    "Database": "{database}"
+  }
+}
+```
 
 ## Create migrations
 
