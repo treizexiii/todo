@@ -21,6 +21,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Persistence\Persistence.Database\Persistence.Database.csproj" />
+      <ProjectReference Include="..\Tools\AspExtension\AspExtension.csproj" />
     </ItemGroup>
 
 </Project>
