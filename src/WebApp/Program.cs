@@ -1,27 +1,49 @@
-using AspExtension;
+using System;
 using Client.HttpRestClient;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using WebApp;
 using WebApp.Services;
 using WebApp.Tools;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
+namespace WebApp;
 
-builder.Configuration.ConfigureHost("configuration", "Development");
-builder.Configuration.AddJsonFile("configuration/appsettings.json", optional: false);
+internal static class Program
+{
+    private const string CONFIG_PATH = "configuration";
 
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+    private static readonly string AppEnvironment =
+        Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Development";
 
-var apiUrl = builder.Configuration.GetValue<string>("API_URL")
-    ?? throw new Exception("ApiUrl not found in appsettings.json");
+    public static async Task Main(string[] args)
+    {
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddRestClient(apiUrl);
-builder.Services.AddScoped<TodoServiceFacade>();
+        builder.RootComponents.Add<App>("#app");
+        builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddConsole();
+        await AddConfiguration(builder);
 
-var app = builder.Build();
+        var apiUrl = builder.Configuration.GetValue<string>("API_URL")
+                     ?? throw new Exception("ApiUrl not found in appsettings.json");
 
-await app.RunAsync();
+        builder.Services.AddRestClient(apiUrl);
+        builder.Services.AddScoped<TodoServiceFacade>();
+
+        builder.Services.AddConsole();
+
+        var app = builder.Build();
+
+        await app.RunAsync();
+    }
+
+    private static async Task AddConfiguration(WebAssemblyHostBuilder builder)
+    {
+        var http = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+        builder.Services.AddScoped(_ => http);
+        using var response = await http.GetAsync($"{CONFIG_PATH}/appsettings.json");
+        await using var stream = await response.Content.ReadAsStreamAsync();
+        await using var stream2 = await http.GetStreamAsync($"{CONFIG_PATH}/appsettings.{AppEnvironment}.json");
+        builder.Configuration.AddJsonStream(stream);
+        builder.Configuration.AddJsonStream(stream2);
+    }
+}

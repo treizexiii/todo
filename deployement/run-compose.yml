@@ -9,6 +9,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
+      - DbSecret:Host=${IP_ADDRESS}
+      - DbSecret:Port=${DB_PORT}
+      - DbSecret:Username=${DB_USER}
+      - DbSecret:Password=${DB_PASSWORD}
+      - DbSecret:Database=${DB_NAME}
     extra_hosts:
       - "todo-db:${IP_ADDRESS}"
     depends_on:
@@ -23,12 +28,19 @@ services:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
       - API_URL=http://${IP_ADDRESS}:5000
+    volumes:
+      - "${WEBAPP_CONFIG_DIR}:/usr/share/nginx/html/configuration"
 
   db-command:
     container_name: db-command
     image: registry.treize.cloud/todos-db-builder:${TAG}
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - DbSecret:Host=${IP_ADDRESS}
+      - DbSecret:Port=${DB_PORT}
+      - DbSecret:Username=${DB_USER}
+      - DbSecret:Password=${DB_PASSWORD}
+      - DbSecret:Database=${DB_NAME}
     tty: true
     extra_hosts:
       - "todo-db:${IP_ADDRESS}"

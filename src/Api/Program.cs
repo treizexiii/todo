@@ -1,3 +1,4 @@
+using Api.Tools;
 using AspExtension;
 using Core;
 using Persistence.Database;
@@ -19,8 +20,8 @@ internal static class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.Configuration.ConfigureHost(CONFIG_PATH, AspEnvironment);
         builder.AddServices();
-
         var app = builder.Build();
+        app.StarterLog();
         app.ConfigureApp();
         app.Run();
     }
@@ -52,7 +53,7 @@ internal static class Program
         builder.Services.AddSwaggerGen();
     }
 
-    private static WebApplication ConfigureApp(this WebApplication app)
+    private static void ConfigureApp(this WebApplication app)
     {
         app.UseCors("*");
         app.UseRouting();
@@ -68,7 +69,5 @@ internal static class Program
         app.UseSwaggerUI();
 
         app.UseHttpsRedirection();
-
-        return app;
     }
 }

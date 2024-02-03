@@ -11,13 +11,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
-      - DbSecret:Host=todo-db
-      - DbSecret:Port=5432
-      - DbSecret:Database=todos
+      - DbSecret:Host=${IP_ADDRESS}
+      - DbSecret:Port=${DB_PORT}
       - DbSecret:Username=${DB_USER}
       - DbSecret:Password=${DB_PASSWORD}
-    extra_hosts:
-      - "todo-db:${IP_ADDRESS}"
+      - DbSecret:Database=${DB_NAME}
+#    extra_hosts:
+#      - "todo-db:${IP_ADDRESS}"
     depends_on:
       - postgres
 
@@ -33,23 +33,23 @@ services:
     volumes:
       - "${DATA_DIR}/postgres:/var/lib/postgresql/data"
 
-  db-command:
-    container_name: db-command
-    build:
-      context: ../.
-      dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
-    environment:
-      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-      - DbSecret:Host=todo-db
-      - DbSecret:Port=5432
-      - DbSecret:Database=todos
-      - DbSecret:Username=${DB_USER}
-      - DbSecret:Password=${DB_PASSWORD}
-    tty: true
-    extra_hosts:
-      - "todo-db:${IP_ADDRESS}"
-    depends_on:
-      - postgres
+#  db-command:
+#    container_name: db-command
+#    build:
+#      context: ../.
+#      dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
+#    environment:
+#      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+#      - DbSecret:Host=${IP_ADDRESS}
+#      - DbSecret:Port=${DB_PORT}
+#      - DbSecret:Username=${DB_USER}
+#      - DbSecret:Password=${DB_PASSWORD}
+#      - DbSecret:Database=${DB_NAME}
+#    tty: true
+##    extra_hosts:
+##      - "todo-db:${IP_ADDRESS}"
+#    depends_on:
+#      - postgres
 
 #  web-app:
 #    container_name: web-app
