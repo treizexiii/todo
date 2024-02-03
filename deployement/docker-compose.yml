@@ -13,7 +13,7 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - DbSecret:Host=${IP_ADDRESS}
       - DbSecret:Port=${DB_PORT}
-      - DbSecret:Username=${DB_USER}
+      - DbSecret:User=${DB_USER}
       - DbSecret:Password=${DB_PASSWORD}
       - DbSecret:Database=${DB_NAME}
 #    extra_hosts:
