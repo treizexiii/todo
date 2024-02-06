@@ -25,21 +25,23 @@ else
                 @foreach (var item in _todoDto.Items.OrderBy(i => i.CreatedAt))
                 {
                     <li class="list-group-item list-group-item-action" @onclick="() => CheckItem(item.Id)">
-                        <div class="d-flex flex-row w-100 justify-content-between">
-                            @item.Title
-                            @if (item.IsCompleted)
-                            {
-                                <span class="badge bg-success rounded-pill">
-                                    <i class="bi bi-check2-circle"></i>
-                                </span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning rounded-pill">
-                                    <i class="bi bi-circle"></i>
-                                </span>
-                            }
-                        </div>
+                        <SwipingComponent OnSwipe="OnSwipe" Data="item.Id">
+                            <div class="d-flex flex-row w-100 justify-content-between">
+                                @item.Title
+                                @if (item.IsCompleted)
+                                {
+                                    <span class="badge bg-success rounded-pill">
+                                        <i class="bi bi-check2-circle"></i>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning rounded-pill">
+                                        <i class="bi bi-circle"></i>
+                                    </span>
+                                }
+                            </div>
+                        </SwipingComponent>
                     </li>
                 }
                 <li class="list-group-item list-group-item-action">
@@ -118,6 +120,19 @@ else
         }
 
         StateHasChanged();
+    }
+
+    private void OnSwipe(SwipeResult result)
+    {
+        if (result.Direction is SwipeDirection.Left or SwipeDirection.Right)
+        {
+            var task = CheckItem((Guid)(result.Data ?? throw new InvalidOperationException()));
+            task.Wait();
+            if (task.IsCompleted)
+            {
+                Console.WriteLine("done");
+            }
+        }
     }
 
 }

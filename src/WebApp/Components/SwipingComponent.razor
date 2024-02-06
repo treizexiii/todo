@@ -1,0 +1,38 @@
+@code {
+
+}
+<div @attributes="UserAttributes" class="@Class" style="@Style"
+     @ontouchstart="OnTouchStart" @ontouchstart:stopPropagation
+     @ontouchend="OnTouchEnd" @ontouchend:stopPropagation
+     @ontouchcancel="OnTouchCancel" @ontouchcancel:stopPropagation>
+    @ChildContent
+</div>
+
+
+<!--
+ if (Math.Abs(xDiff) > Math.Abs(yDiff))
+        {
+            if (xDiff > 0)
+            {
+                InvokeAsync(() => OnSwipe(SwipeDirection.RightToLeft));
+            }
+            else
+            {
+                InvokeAsync(() => OnSwipe(SwipeDirection.LeftToRight));
+            }
+        }
+        else
+        {
+            if (yDiff > 0)
+            {
+                InvokeAsync(() => OnSwipe(SwipeDirection.BottomToTop));
+            }
+            else
+            {
+                InvokeAsync(() => OnSwipe(SwipeDirection.TopToBottom));
+            }
+        }
+
+        _xDown = null;
+        _yDown = null;
+-->

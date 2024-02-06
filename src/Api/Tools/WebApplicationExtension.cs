@@ -52,8 +52,7 @@ public static class WebApplicationExtension
 
     public static void ConfigureApp(this WebApplication app)
     {
-        // app.UseCors("*");
-        app.UseCors();
+        app.UseCors("*");
         app.UseRouting();
         app.MapControllers();
 

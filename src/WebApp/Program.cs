@@ -26,7 +26,11 @@ internal static class Program
         builder.Services.AddSingleton(
             _ => new HttpClient
             {
-                BaseAddress = new Uri($"http://localhost:{5000}")
+                BaseAddress = new Uri($"http://localhost:{5000}"),
+                DefaultRequestHeaders =
+                {
+
+                }
             });
 #else
         builder.Services.AddSingleton(
