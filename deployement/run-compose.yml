@@ -27,7 +27,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
-      - API_URL=http://${IP_ADDRESS}:5000
+      - API_URL=${API_URL}
     volumes:
       - "${WEBAPP_CONFIG_DIR}:/usr/share/nginx/html/configuration"
 

@@ -19,7 +19,7 @@ RUN dotnet publish "WebApp.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:Us
 
 FROM nginx:alpine AS final
 WORKDIR /usr/share/nginx/html
-RUN #apk add jq
+RUN apk add jq
 COPY --from=publish /app/publish/wwwroot .
 COPY src/WebApp/nginx.conf /etc/nginx/nginx.conf
-#COPY ["src/WebApp/update-env.sh", "/docker-entrypoint.d/40-update-env.sh"]
+COPY ["src/WebApp/update-env.sh", "/docker-entrypoint.d/40-update-env.sh"]

@@ -16,10 +16,7 @@
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
-      <Content Update="wwwroot\configuration\appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-      <Content Update="wwwroot\configuration\appsettings.Development.json">
+      <Content Update="wwwroot\appsettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
@@ -36,6 +33,11 @@
       <None Update="nginx.conf">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="configuration\appsettings.Development.json" />
+      <_ContentIncludedByDefault Remove="configuration\appsettings.json" />
     </ItemGroup>
 
 </Project>

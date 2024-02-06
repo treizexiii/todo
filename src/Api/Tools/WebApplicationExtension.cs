@@ -32,6 +32,7 @@ public static class WebApplicationExtension
             setup.AddPolicy("*", policyBuilder =>
             {
                 policyBuilder
+                    // .WithOrigins("http://todos.treize.cloud")
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
@@ -51,7 +52,8 @@ public static class WebApplicationExtension
 
     public static void ConfigureApp(this WebApplication app)
     {
-        app.UseCors("*");
+        // app.UseCors("*");
+        app.UseCors();
         app.UseRouting();
         app.MapControllers();
 
@@ -61,6 +63,7 @@ public static class WebApplicationExtension
         //     app.UseSwagger();
         //     app.UseSwaggerUI();
         // }
+
         app.UseSwagger();
         app.UseSwaggerUI();
 

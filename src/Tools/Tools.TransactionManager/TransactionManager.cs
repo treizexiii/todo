@@ -1,3 +1,4 @@
+using System.Data.Common;
 using Microsoft.Extensions.Logging;
 
 namespace Tools.TransactionManager;
@@ -8,18 +9,30 @@ public class TransactionManager(ILogger<TransactionManager> logger, IDbContext c
 
     public async Task BeginTransactionAsync(Guid userId)
     {
+        var transaction = new TransactionInfo(userId);
         try
         {
-            var transaction = new TransactionInfo(userId);
             var newTransaction = await context.BeginTransactionAsync();
             transaction.AddTransaction(context, newTransaction);
             _transaction = transaction;
             logger.LogInformation("Transaction started for user {UserId}", userId);
         }
+        catch (DbException e)
+        {
+            logger.LogWarning("Error while starting transaction for user {UserId}", userId);
+            transaction.HasFailed();
+            transaction.SetMessage(e.Message);
+            throw new Exception($"Error while starting transaction for user {userId}");
+        }
         catch (Exception e)
         {
             logger.LogWarning("Error while starting transaction: {Message}", e.Message);
+            transaction.HasFailed();
             throw;
+        }
+        finally
+        {
+            _transaction = transaction;
         }
     }
 
@@ -82,7 +95,7 @@ public class TransactionManager(ILogger<TransactionManager> logger, IDbContext c
     {
         if (_transaction is null)
         {
-            throw new ArgumentException($"Transaction for user {userId} not found");
+            throw new ArgumentException($"Transaction for user {userId} not found or not started");
         }
 
         TransactionInfo currentInfo;
@@ -104,7 +117,6 @@ public class TransactionManager(ILogger<TransactionManager> logger, IDbContext c
             _transaction.SetMessage(e.Message);
             _transaction.SetStatus(TransactionStatusEnum.RolledBack);
             currentInfo = _transaction;
-
         }
         catch (Exception exception)
         {
@@ -124,6 +136,7 @@ public class TransactionManager(ILogger<TransactionManager> logger, IDbContext c
 
             logger.LogInformation("Transactions end for user {UserId}", userId);
         }
+
         return currentInfo;
     }
 
@@ -141,7 +154,8 @@ public class TransactionManager(ILogger<TransactionManager> logger, IDbContext c
 
     public Task<TransactionInfo> RollbackTransactionAsync(Guid userId, Exception e, params Type[] contextName)
     {
-        throw new NotImplementedException("Use for multi context transaction, use RollbackTransactionAsync(Guid userId)");
+        throw new NotImplementedException(
+            "Use for multi context transaction, use RollbackTransactionAsync(Guid userId)");
     }
 
     #endregion

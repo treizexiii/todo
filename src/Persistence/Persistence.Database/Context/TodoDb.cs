@@ -1,6 +1,7 @@
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Npgsql;
 using Tools.TransactionManager;
 
 namespace Persistence.Database.Context;
