@@ -52,5 +52,6 @@ public static class DatabaseProvider
     {
         services.AddScoped<ITodosRepository, TodosRepository>();
         services.AddScoped<IItemsRepository, ItemsRepository>();
+        services.AddScoped<ISuggestedItemsRepository, SuggestedItemsRepository>();
     }
 }

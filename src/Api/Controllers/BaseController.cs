@@ -42,18 +42,22 @@ public abstract class BaseController(ILogger<BaseController> logger, ITransactio
     {
         var exceptionType = e.GetType().Name;
         int code;
+        string message;
         switch (exceptionType)
         {
             case "DataException":
             case "ArgumentException":
                 code = 400;
+                message = e.Message;
                 break;
             case "KeyNotFoundException":
             case "FileNotFoundException":
                 code = 404;
+                message = e.Message;
                 break;
             default:
                 code = 500;
+                message = e.Message;
                 break;
         }
 
@@ -62,7 +66,7 @@ public abstract class BaseController(ILogger<BaseController> logger, ITransactio
             Version = "1.0",
             Code = code,
             Success = false,
-            Message = e.Message
+            Message = message
         };
 
         return base.StatusCode(response.Code, response);

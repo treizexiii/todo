@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\DataSets\DataSets.csproj" />
       <ProjectReference Include="..\..\Tools\AspExtension\AspExtension.csproj" />
       <ProjectReference Include="..\Persistence.Database\Persistence.Database.csproj" />
     </ItemGroup>

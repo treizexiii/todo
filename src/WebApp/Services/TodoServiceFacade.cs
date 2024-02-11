@@ -49,4 +49,9 @@ public class TodoServiceFacade(ITodoServiceProxy todoServiceProxy)
     {
         await todoServiceProxy.CompleteItemAsync(todoId, itemId);
     }
+
+    public async Task DeleteItemAsync(Guid todoId, Guid itemId)
+    {
+        await todoServiceProxy.DeleteItemAsync(todoId, itemId);
+    }
 }

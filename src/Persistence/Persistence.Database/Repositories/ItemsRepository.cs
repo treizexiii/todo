@@ -28,13 +28,16 @@ public class ItemsRepository(TodoDb context) : IItemsRepository
         return Task.CompletedTask;
     }
 
-    public async Task DeleteAsync(Guid itemId)
+    public async Task<int> DeleteAsync(Guid itemId)
     {
         var item = await context.Items.FirstOrDefaultAsync(i => i.Id == itemId);
         if (item is not null)
         {
             context.Remove(item);
+            return 0;
         }
+
+        return 1;
     }
 
     public async Task<bool> ControlListAsync(Guid todoId)

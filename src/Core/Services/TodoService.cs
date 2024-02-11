@@ -4,7 +4,10 @@ using Core.Repositories;
 
 namespace Core.Services;
 
-public class TodoService(ITodosRepository repository) : ITodoService
+public class TodoService(
+    ITodosRepository repository,
+    ISuggestedItemsRepository suggestedItemsRepository
+    ) : ITodoService
 {
     public async Task<IEnumerable<Todo>> GetAllAsync(TodoFilterOptions? filterOptions)
     {
@@ -60,5 +63,10 @@ public class TodoService(ITodosRepository repository) : ITodoService
 
         await repository.UpdateAsync(todoEntity);
         return todoEntity;
+    }
+
+    public Task<IEnumerable<SuggestedItem>> GetSuggestionsAsync(TodoType todoTodoType)
+    {
+        throw new NotImplementedException();
     }
 }

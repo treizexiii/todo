@@ -68,6 +68,13 @@ public class TodoHttpRestClient(HttpClient httpClient) : ITodoServiceProxy, IDis
         await response.Content.ReadFromJsonAsync<Response>();
     }
 
+    public async Task DeleteItemAsync(Guid todoId, Guid itemId)
+    {
+        var response = await httpClient.DeleteAsync($"api/todos/{todoId}/items/{itemId}");
+        response.EnsureSuccessStatusCode();
+        await response.Content.ReadFromJsonAsync<Response>();
+    }
+
     public void Dispose()
     {
         Dispose(true);

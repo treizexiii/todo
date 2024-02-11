@@ -24,18 +24,12 @@ internal static class Program
 
 #if DEBUG
         builder.Services.AddSingleton(
-            _ => new HttpClient
-            {
-                BaseAddress = new Uri($"http://localhost:{5000}"),
-                DefaultRequestHeaders =
-                {
-
-                }
-            });
+            _ => new HttpClient { BaseAddress = new Uri($"http://localhost:{7070}") });
 #else
         builder.Services.AddSingleton(
             _ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 #endif
+
         builder.Services.AddRestClient();
         builder.Services.AddScoped<TodoServiceFacade>();
 

@@ -8,6 +8,6 @@ public interface IItemsRepository
     Task<Item?> GetAsync(Guid itemId);
     Task CreateAsync(Item item);
     Task UpdateAsync(Item item);
-    Task DeleteAsync(Guid itemId);
+    Task<int> DeleteAsync(Guid itemId);
     Task<bool> ControlListAsync(Guid todoId);
 }

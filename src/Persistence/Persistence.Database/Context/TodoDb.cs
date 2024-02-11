@@ -1,7 +1,6 @@
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Npgsql;
 using Tools.TransactionManager;
 
 namespace Persistence.Database.Context;
@@ -14,20 +13,14 @@ public class TodoDb : DbContext, IDbContext
 
     public DbSet<Todo> Todos { get; set; } = null!;
     public DbSet<Item> Items { get; set; } = null!;
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-    }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-    }
+    public DbSet<TodoType> TodoTypes { get; set; } = null!;
+    public DbSet<SuggestedItem> SuggestedItems { get; set; } = null!;
 
     public Task SeedAsync()
     {
-        Console.WriteLine("Seeding database");
+        Console.WriteLine("Seeding database: " + Database.ProviderName);
+
+
         return Task.CompletedTask;
     }
 

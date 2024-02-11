@@ -70,4 +70,9 @@ public class ItemService(IItemsRepository repository) : IItemService
 
         return itemEntity;
     }
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await repository.DeleteAsync(id);
+    }
 }

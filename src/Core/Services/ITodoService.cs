@@ -11,4 +11,5 @@ public interface ITodoService
     public Task<Todo> CreateAsync(CreateTodo todo);
     Task<Todo> UpdateAsync(Guid id, UpdateTodo todo);
     Task<Todo> CompleteAsync(Guid id);
+    Task<IEnumerable<SuggestedItem>> GetSuggestionsAsync(TodoType todoTodoType);
 }

@@ -24,29 +24,33 @@ else
             <ul class="list-group list-group-flush">
                 @foreach (var item in _todoDto.Items.OrderBy(i => i.CreatedAt))
                 {
-                    <li class="list-group-item list-group-item-action" @onclick="() => CheckItem(item.Id)">
+                    <li class="list-group-item list-group-item-action">
                         <SwipingComponent OnSwipe="OnSwipe" Data="item.Id">
                             <div class="d-flex flex-row w-100 justify-content-between">
-                                @item.Title
-                                @if (item.IsCompleted)
-                                {
-                                    <span class="badge bg-success rounded-pill">
-                                        <i class="bi bi-check2-circle"></i>
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning rounded-pill">
-                                        <i class="bi bi-circle"></i>
-                                    </span>
-                                }
+                                <div>
+                                    @item.Title
+                                </div>
+                                <div @onclick="() => CheckItem(item.Id)">
+                                    @if (item.IsCompleted)
+                                    {
+                                        <span class="badge bg-success rounded-pill">
+                                            <i class="bi bi-check2-circle"></i>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning rounded-pill">
+                                            <i class="bi bi-circle"></i>
+                                        </span>
+                                    }
+                                </div>
                             </div>
                         </SwipingComponent>
                     </li>
                 }
                 <li class="list-group-item list-group-item-action">
                     <div class="d-flex flex-row w-100 justify-content-between">
-                        <input type="text" class="form-control w-75" @bind="_newItem"/>
+                        <input type="text" class="form-control w-75" @bind="_newItem" @onkeydown="@KeyHandler" />
                         <button type="button" class="btn btn-primary" @onclick="AddNewItem">
                             <i class="bi bi-file-earmark-plus"></i>
                         </button>
@@ -77,6 +81,37 @@ else
         await Logger.LogInformation("Todo loaded");
     }
 
+    private async Task KeyHandler(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await Logger.LogInformation("Enter key pressed");
+            await Logger.LogInformation("New item: " + _newItem);
+            await AddNewItem();
+        }
+    }
+
+    private async Task OnSwipe(SwipeResult result)
+    {
+        if (result.Data != null && Guid.TryParse(result.Data.ToString(), out Guid itemId))
+        {
+            // if (result.Direction is SwipeDirection.Right)
+            // {
+            //     await Logger.LogInformation("right");
+            //     await CheckItem(itemId);
+            // }
+            if (result.Direction is SwipeDirection.Left)
+            {
+                await Logger.LogInformation("left");
+                await DeleteItem(itemId);
+            }
+        }
+        else
+        {
+            await Logger.LogError("Item id is not a valid");
+        }
+    }
+
     private async Task AddNewItem()
     {
         if (_todoDto != null)
@@ -84,10 +119,10 @@ else
             if (_newItem != null)
             {
                 var newItem = new CreateItem(
-                    _newItem,
-                    null,
-                    null,
-                    _todoDto.Id
+                _newItem,
+                null,
+                null,
+                _todoDto.Id
                 );
                 var itemDto = await TodoServiceFacade.CreateItemAsync(newItem);
                 _todoDto?.Items.Add(itemDto);
@@ -122,17 +157,13 @@ else
         StateHasChanged();
     }
 
-    private void OnSwipe(SwipeResult result)
+    private async Task DeleteItem(Guid itemId)
     {
-        if (result.Direction is SwipeDirection.Left or SwipeDirection.Right)
-        {
-            var task = CheckItem((Guid)(result.Data ?? throw new InvalidOperationException()));
-            task.Wait();
-            if (task.IsCompleted)
-            {
-                Console.WriteLine("done");
-            }
-        }
+        await Logger.LogInformation("Item to delete: " + itemId);
+        await TodoServiceFacade.DeleteItemAsync(Id, itemId);
+        _todoDto?.Items.RemoveAll(x => x.Id == itemId);
+        _items = _todoDto?.Items;
+        await Logger.LogInformation("Item deleted");
+        StateHasChanged();
     }
-
 }

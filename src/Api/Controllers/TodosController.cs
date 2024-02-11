@@ -1,4 +1,5 @@
 using Core.Dto;
+using Core.Entities;
 using Core.Repositories;
 using Core.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -115,6 +116,30 @@ public class TodosController(
         }
     }
 
+    // [HttpGet("{id:guid}/suggestions")]
+    // public async Task<IActionResult> GetTodoSuggestions(Guid id)
+    // {
+    //     Logger.LogInformation("GetTodoSuggestions");
+    //     try
+    //     {
+    //         await Transaction.BeginTransactionAsync(_userId);
+    //         var todo = await todoService.GetAsync(id);
+    //         if (todo is null)
+    //         {
+    //             throw new FileNotFoundException("Todo not found");
+    //         }
+    //         var suggestions = await todoService.GetSuggestionsAsync(todo.TodoType);
+    //         await Transaction.CommitTransactionAsync(_userId);
+    //         return Ok(todo.ToDto());
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         await Transaction.RollbackTransactionAsync(_userId, e);
+    //         Logger.LogError(e, "Error getting todo suggestions");
+    //         return Error(e);
+    //     }
+    // }
+
     [HttpPost("{id:guid}/items")]
     public async Task<IActionResult> CreateItem(Guid id, CreateItem request)
     {
@@ -171,4 +196,23 @@ public class TodosController(
             return Error(e);
         }
     }
+
+    [HttpDelete("{id:guid}/items/{itemId:guid}")]
+    public async Task<IActionResult> DeleteItem(Guid id, Guid itemId)
+    {
+        Logger.LogInformation("DeleteItem");
+        try
+        {
+            await Transaction.BeginTransactionAsync(_userId);
+            await itemService.DeleteAsync(itemId);
+            await Transaction.CommitTransactionAsync(_userId);
+            return Ok("Removed");
+        }
+        catch (Exception e)
+        {
+            await Transaction.RollbackTransactionAsync(_userId, e);
+            Logger.LogError(e, "Error deleting item");
+            return Error(e);
+        }
+    }                                                                                                                                           
 }

@@ -1,3 +1,4 @@
+using DataSets;
 using Microsoft.Extensions.Logging;
 using Persistence.Database.Context;
 
@@ -12,7 +13,15 @@ public class DataBaseSeedCommand : CommandBase
     public override async Task ExecuteAsync()
     {
         Logger.LogInformation("Seeding database");
-        await Context.SeedAsync();
+
+        var todoTypes = TodoTypes.GetTodoTypeList();
+        await Context.TodoTypes.AddRangeAsync(todoTypes);
+
+        // var suggestedItems = SuggestedItems.GetSuggestedItemList();
+        // await Context.SuggestedItems.AddRangeAsync(suggestedItems);
+
+        await Context.SaveChangesAsync();
+
         Logger.LogInformation("Database seeded");
     }
 }

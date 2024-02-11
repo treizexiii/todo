@@ -10,4 +10,5 @@ public interface IItemService
     Task<Item> CreateAsync(Guid todoId, CreateItem item);
     Task<Item> UpdateAsync(Guid id, UpdateItem item);
     Task<Item> CompleteAsync(Guid id);
+    Task DeleteAsync(Guid id);
 }

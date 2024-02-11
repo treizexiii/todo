@@ -2,27 +2,27 @@ version: "3"
 
 services:
   api:
-    container_name: api
+    container_name: todo-api
     build:
       context: ../.
       dockerfile: src/Api/Dockerfile
     ports:
-      - "5000:80"
+      - "7070:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
       - ASPNETCORE_URLS=http://+:80
-      - DbSecret:Host=${IP_ADDRESS}
+      - DbSecret:Host=todo-db
       - DbSecret:Port=${DB_PORT}
       - DbSecret:User=${DB_USER}
       - DbSecret:Password=${DB_PASSWORD}
       - DbSecret:Database=${DB_NAME}
-#    extra_hosts:
-#      - "todo-db:${IP_ADDRESS}"
     depends_on:
       - postgres
+    networks:
+      - todos-network
 
   postgres:
-    container_name: postgres
+    container_name: todo-db
     image: postgres:13.13
     restart: always
     ports:
@@ -32,36 +32,38 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - "${DATA_DIR}/postgres:/var/lib/postgresql/data"
+    networks:
+      - todos-network
 
-#  db-command:
-#    container_name: db-command
+    #  db-command:
+#    container_name: todo-db-command
 #    build:
 #      context: ../.
 #      dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
 #    environment:
 #      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-#      - DbSecret:Host=${IP_ADDRESS}
+#      - DbSecret:Host=postgres
 #      - DbSecret:Port=${DB_PORT}
 #      - DbSecret:Username=${DB_USER}
 #      - DbSecret:Password=${DB_PASSWORD}
 #      - DbSecret:Database=${DB_NAME}
 #    tty: true
-##    extra_hosts:
-##      - "todo-db:${IP_ADDRESS}"
 #    depends_on:
 #      - postgres
 
 #  web-app:
-#    container_name: web-app
+#    container_name: todo-web-app
 #    build:
 #      context: ../.
 #      dockerfile: src/WebApp/Dockerfile
 #    ports:
-#      - "8080:80"
+#      - "7071:80"
 #    environment:
 #      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 #      - ASPNETCORE_URLS=http://+:80
-#      - API_URL=http://${IP_ADDRESS}:5000
+#      - API_URL=${API_URL}
+    # volumes:
+    #   - "${WEBAPP_CONFIG_DIR}:/usr/share/nginx/html/configuration"
 
 #  identity-server:
 #    container_name: identity-server
@@ -87,3 +89,7 @@ services:
 #      - "127.0.0.1:8080:8080"
 #    environment:
 #      - ASPNETCORE_ENVIRONMENT=Development
+
+networks:
+  todos-network:
+    driver: bridge
