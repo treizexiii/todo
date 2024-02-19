@@ -6,6 +6,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <InvariantGlobalization>true</InvariantGlobalization>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <Version>0.9.0</Version>
+        <AssemblyName>IdentityServer</AssemblyName>
+        <Authors>Treize</Authors>
     </PropertyGroup>
 
     <ItemGroup>

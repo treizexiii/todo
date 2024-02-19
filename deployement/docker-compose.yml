@@ -21,6 +21,24 @@ services:
     networks:
       - todos-network
 
+  identity-server:
+    container_name: identity-server
+    build:
+      context: ../.
+      dockerfile: src/Authentication/Authentication.IdentityServer/Dockerfile
+    ports:
+      - "7060:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ASPNETCORE_URLS=http://+:80
+      - IdentityDbSecret:Host=todo-db
+      - IdentityDbSecret:Port=${DB_PORT}
+      - IdentityDbSecret:User=${DB_USER}
+      - IdentityDbSecret:Password=${DB_PASSWORD}
+      - IdentityDbSecret:Database=IdentityDb
+    depends_on:
+      - postgres
+
   postgres:
     container_name: todo-db
     image: postgres:13.13
@@ -36,32 +54,32 @@ services:
       - todos-network
 
     #  db-command:
-#    container_name: todo-db-command
-#    build:
-#      context: ../.
-#      dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-#      - DbSecret:Host=postgres
-#      - DbSecret:Port=${DB_PORT}
-#      - DbSecret:Username=${DB_USER}
-#      - DbSecret:Password=${DB_PASSWORD}
-#      - DbSecret:Database=${DB_NAME}
-#    tty: true
-#    depends_on:
-#      - postgres
+    #    container_name: todo-db-command
+    #    build:
+    #      context: ../.
+    #      dockerfile: src/Persistence/Persistence.MigrationTool/Dockerfile
+    #    environment:
+    #      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    #      - DbSecret:Host=postgres
+    #      - DbSecret:Port=${DB_PORT}
+    #      - DbSecret:Username=${DB_USER}
+    #      - DbSecret:Password=${DB_PASSWORD}
+    #      - DbSecret:Database=${DB_NAME}
+    #    tty: true
+    #    depends_on:
+    #      - postgres
 
-#  web-app:
-#    container_name: todo-web-app
-#    build:
-#      context: ../.
-#      dockerfile: src/WebApp/Dockerfile
-#    ports:
-#      - "7071:80"
-#    environment:
-#      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
-#      - ASPNETCORE_URLS=http://+:80
-#      - API_URL=${API_URL}
+    #  web-app:
+    #    container_name: todo-web-app
+    #    build:
+    #      context: ../.
+    #      dockerfile: src/WebApp/Dockerfile
+    #    ports:
+    #      - "7071:80"
+    #    environment:
+    #      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+    #      - ASPNETCORE_URLS=http://+:80
+    #      - API_URL=${API_URL}
     # volumes:
     #   - "${WEBAPP_CONFIG_DIR}:/usr/share/nginx/html/configuration"
 

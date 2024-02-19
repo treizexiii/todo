@@ -18,6 +18,7 @@ public class IdentityDb : DbContext, IDbContext
     public DbSet<Claim> Claims { get; set; } = null!;
     public DbSet<UserClaim> UserClaims { get; set; } = null!;
     public DbSet<Token> Tokens { get; set; } = null!;
+    public DbSet<Secret> Secrets { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,6 +37,8 @@ public class IdentityDb : DbContext, IDbContext
         modelBuilder.Entity<Role>(builder =>
         {
             builder.Property(x => x.Name).HasConversion(new EnumToStringConverter<RoleEnum>());
+            builder.HasData(RoleType.Roles);
+
         });
 
         modelBuilder.Entity<Token>(builder =>

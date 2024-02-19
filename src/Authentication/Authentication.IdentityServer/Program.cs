@@ -1,3 +1,4 @@
+using Authentication.IdentityServer;
 using Authentication.Persistence;
 using Authentication.Persistence.Database;
 using Authentication.Services;
@@ -10,7 +11,7 @@ builder.Services.AddLogging();
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false);
 
-builder.Services.AddIdentityDb(builder.Configuration.GetConnectionString("IdentityDb") ??
+builder.Services.AddIdentityDb(builder.Configuration.BuildPostgresConnectionString("Identity") ??
                                throw new InvalidOperationException("IdentityDb connection string is null"));
 
 builder.Services.AddServices();
@@ -36,8 +37,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ControlDatabase();
+
 app.UseHttpsRedirection();
 
-// var transaction = app.Services.GetRequiredService<Tools.TransactionManager.ITransactionManager>();
+
 
 app.Run();

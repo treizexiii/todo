@@ -15,12 +15,17 @@ public class ClaimsRepository : IClaimsRepository
         throw new NotImplementedException();
     }
 
-    public Task<Claim?> GetClaimAsync(Guid nodeId)
+    public Task<Claim?> GetClaimAsync(Guid claimId)
     {
         throw new NotImplementedException();
     }
 
     public Task AddClaimAsync(Claim claim)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task AddUserClaimAsync(UserClaim userClaim)
     {
         throw new NotImplementedException();
     }

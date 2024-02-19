@@ -35,7 +35,12 @@ public class TestController(ITransactionManager transactionManager, IAdminUser a
         try
         {
             await transactionManager.BeginTransactionAsync(_user, typeof(IdentityDb));
-            var user = new NewUserDto(Guid.NewGuid(), "test2", "test2@test.fr");
+            var user = new NewUserDto(
+                null,
+                "test@testtest",
+                "test@testtest",
+                "test",
+                "test");
             var result = await admin.AddUser(user);
 
             await transactionManager.CommitTransactionAsync(_user, typeof(IdentityDb));

@@ -3,6 +3,7 @@ using System;
 using Authentication.Persistence.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Authentication.Persistence.Migrations
 {
     [DbContext(typeof(IdentityDb))]
-    partial class IdentityDbModelSnapshot : ModelSnapshot
+    [Migration("20240211212259_Secrets")]
+    partial class Secrets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,12 +80,12 @@ namespace Authentication.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("3b33ddef-f49a-4643-88e8-fcbf3c4fcf16"),
+                            Id = new Guid("a8a419a0-f0e4-4571-8e40-60fda468d56c"),
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = new Guid("6387fd8f-b982-428e-b933-462b156334e9"),
+                            Id = new Guid("f3549e74-b5c5-4849-9507-956960239a40"),
                             Name = "User"
                         });
                 });
@@ -94,7 +97,7 @@ namespace Authentication.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTimeOffset?>("ClosedAt")
+                    b.Property<DateTime?>("ClosedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("closedat");
 
@@ -103,7 +106,7 @@ namespace Authentication.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("name");
 
-                    b.Property<DateTimeOffset>("OpenedAt")
+                    b.Property<DateTime>("OpenedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("openedat");
 
@@ -111,7 +114,7 @@ namespace Authentication.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("ownerid");
 
-                    b.Property<DateTimeOffset?>("RevokedAt")
+                    b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("revokedat");
 
@@ -137,7 +140,7 @@ namespace Authentication.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTimeOffset>("CreatedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("createdat");
 
@@ -146,7 +149,7 @@ namespace Authentication.Persistence.Migrations
                         .HasColumnType("bytea")
                         .HasColumnName("hashtoken");
 
-                    b.Property<DateTimeOffset?>("RevokedAt")
+                    b.Property<DateTime?>("RevokedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("revokedat");
 
@@ -180,11 +183,11 @@ namespace Authentication.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<DateTimeOffset?>("ActivatedAt")
+                    b.Property<DateTime?>("ActivatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("activatedat");
 
-                    b.Property<DateTimeOffset?>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deletedat");
 

@@ -7,7 +7,13 @@ public record LoginDto(string Username, string Password);
 
 public record RegisterDto(string Username, string Password);
 
-public record NewUserDto(Guid Id, string Username, string Email);
+public record NewUserDto(Guid? Id, string Email, string ConfirmEmail, string Password, string ConfirmPassword)
+{
+    public bool IsValid()
+    {
+        return Email == ConfirmEmail || Password == ConfirmPassword;
+    }
+}
 
 public record NewClaimDto(Guid Guid, string Name, string Value, ClaimType Type);
 
@@ -20,17 +26,17 @@ public record ClaimDto(Guid Id, string Name, string Value)
 }
 
 public record UserDto(Guid Id, string Username, string Email, bool IsActivated, DateTime? ActivatedAt, bool IsDeleted,
-    DateTime? DeletedAt, IEnumerable<ClaimDto> Nodes, string Roles)
+    DateTime? DeletedAt, IEnumerable<ClaimDto> Claims, string Role)
 {
-    public static UserDto GetUserDto(User user, IEnumerable<ClaimDto> nodes)
+    public static UserDto GetUserDto(User user, IEnumerable<ClaimDto> claims)
     {
-        return new UserDto(user.Id, user.Username, user.Email, user.IsActivated, user.ActivatedAt, user.IsDeleted, user.DeletedAt,
-            nodes, user.Role.Name.ToString());
+        return new UserDto(user.Id, user.Username, user.Email, user.IsActivated, user.ActivatedAt?.DateTime, user.IsDeleted, user.DeletedAt?.DateTime,
+            claims, user.Role.Name.ToString());
     }
 
-    public static UserDto GetUserDto(User user, IEnumerable<ClaimDto> nodes, string roles)
+    public static UserDto GetUserDto(User user, IEnumerable<ClaimDto> claims, string role)
     {
-        return new UserDto(user.Id, user.Username, user.Email, user.IsActivated, user.ActivatedAt, user.IsDeleted, user.DeletedAt,
-            nodes, roles);
+        return new UserDto(user.Id, user.Username, user.Email, user.IsActivated, user.ActivatedAt?.DateTime, user.IsDeleted, user.DeletedAt?.DateTime,
+            claims, role);
     }
 }
